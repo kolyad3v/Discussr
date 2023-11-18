@@ -7,7 +7,7 @@ import IconButton from '@mui/joy/IconButton'
 import FormatBold from '@mui/icons-material/FormatBold'
 import FormatItalic from '@mui/icons-material/FormatItalic'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { useForm } from '@inertiajs/react'
 
 const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversationId: number; setOpen: any }) => {

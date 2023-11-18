@@ -80,7 +80,9 @@ class ConversationController extends Controller
 
         $conversations = Auth::user()->conversations;
         $conversations = Auth::user()->conversations()->with([
-            'messages',
+            'messages' => function ($query) {
+                $query->with('passages');
+            },
             'userOne' => function ($query) {
                 $query->with('avatar');
             },
@@ -178,7 +180,9 @@ class ConversationController extends Controller
 
         $conversations = Auth::user()->conversations;
         $conversations = Auth::user()->conversations()->with([
-            'messages',
+            'messages' => function ($query) {
+                $query->with('passages');
+            },
             'userOne' => function ($query) {
                 $query->with('avatar');
             },

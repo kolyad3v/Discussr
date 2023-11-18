@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { Button } from '@mui/joy'
 import GenericModal from '../GenericModal'
 import { Edit } from '@mui/icons-material'
-import FirstMessageEntryForm from './FirstMessageForm'
+import FirstMessageEntryForm from './NewFirstMessageForm'
 import { Html } from '@react-three/drei'
 
 interface NewFirstMessageButtonProps {

@@ -70,15 +70,15 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 						aria-label='share'
 						variant='soft'
 						color='primary'
-						size='sm'
+						size='lg'
 						sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem', transition: 'all 0.2s ease-in-out' }}>
 						<Share />
 					</IconButton>
 					<IconButton
-						aria-label='share'
+						aria-label='new message'
 						variant='soft'
 						color='primary'
-						size='sm'
+						size='lg'
 						sx={{ position: 'absolute', top: '0.875rem', right: '3rem', transition: 'all 0.2s ease-in-out' }}
 						onClick={() => setOpen(true)}>
 						+

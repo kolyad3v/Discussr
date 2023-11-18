@@ -11,6 +11,7 @@ import { useState, useCallback } from 'react'
 import { useForm } from '@inertiajs/react'
 
 const NewMessageForm = ({ activeConversationId, setOpen, messageId }: { activeConversationId: number; setOpen: any; messageId: number }) => {
+	console.log('new message id', messageId)
 	const [italic, setItalic] = useState(false)
 	const [bold, setBold] = useState(false)
 
@@ -34,7 +35,9 @@ const NewMessageForm = ({ activeConversationId, setOpen, messageId }: { activeCo
 	}
 
 	return (
-		<form onSubmit={submitMessage}>
+		<form
+			onSubmit={submitMessage}
+			style={{ height: '100%' }}>
 			<FormControl
 				sx={{
 					width: 'auto',

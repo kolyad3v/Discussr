@@ -85,6 +85,18 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
+			{activeMessages.length !== 0 &&
+				activeMessages.map((message, index) => (
+					<Message
+						key={message.id}
+						position={[index * 20, 0, 0]}
+						message={message.message}
+						createdAt={message.created_at}
+						passages={message.passages}
+						messageId={message.id}
+						conversationId={message.conversation_id}
+					/>
+				))}
 			{/* {renderMessages()} */}
 		</>
 	)

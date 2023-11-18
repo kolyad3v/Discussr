@@ -26,10 +26,12 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	// 	}
 	// }, [scene, raycaster])
 
-	const explorBranch = (message: IActiveMessage, depth: number) => {
+	const gapY = 10 // Adjust this value as needed for vertical spacing
+
+	const explorBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
 		let finalArray = [
 			<Message
-				position={[depth * 20, 0, 0]}
+				position={[depth * 20, -siblingIndex * gapY, 0]} // Adjust y position based on sibling index
 				message={message.message}
 				createdAt={message.created_at}
 				passages={message.passages}
@@ -43,27 +45,15 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		}
 
 		let nextMessages = getChildren(message.passages)
-		// let totalHeightNextGeneration = getTotalHeightOfNextGeneration(nextMessages, 10)
-		// let workingYPositionOfNextMessage = totalHeightNextGeneration / 2
-		// for (let passage of message.passages) {
-		//     let passageMessage = activeMessages.find((message) => message.passage_id === passage.id)
-		//     if (passageMessage === undefined) {
-		//         continue
-		//     }
-		//     // godRenderArray.push(createGodObjectFromRawMessage(passageMessage!, [depth * gapXBetweenMessages, workingYPositionOfNextMessage, 0]))
-		//     // workingYPositionOfNextMessage -= 5 + gapYBetweenMessages
 
-		// }
-
-		for (let msg of nextMessages) {
+		nextMessages.forEach((msg, index) => {
 			if (msg) {
-				// Ensure msg is not undefined
-				let branch = explorBranch(msg, depth + 1)
+				let branch = explorBranch(msg, depth + 1, index) // Pass index as siblingIndex
 				if (branch) {
 					finalArray = [...finalArray, ...branch]
 				}
 			}
-		}
+		})
 
 		return finalArray
 	}
@@ -87,21 +77,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			/>
 			<ambientLight intensity={0.5} />
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
-
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
-			{/* {activeMessages.length !== 0 &&
-				activeMessages.map((message, index) => (
-					<Message
-						key={message.id}
-						position={[index * 20, 0, 0]}
-						message={message.message}
-						createdAt={message.created_at}
-						passages={message.passages}
-						messageId={message.id}
-						conversationId={message.conversation_id}
-					/>
-				))} */}
-			{/* {renderMessages()} */}
 			{activeMessages.length !== 0 && renderMessages()}
 		</>
 	)

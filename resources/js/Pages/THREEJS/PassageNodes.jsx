@@ -67,7 +67,6 @@ export function PassageNodes({ children }) {
 }
 
 export const Node = forwardRef(({ color = 'black', content, connectedTo = [], position = [0, 0, 0], ...props }, ref) => {
-	const { isPassageNode } = props
 	const set = useContext(context)
 	const { size, camera } = useThree()
 	const [pos, setPos] = useState(() => new THREE.Vector3(...position))
@@ -94,15 +93,6 @@ export const Node = forwardRef(({ color = 'black', content, connectedTo = [], po
 			ref={ref}
 			opacity={1}
 			{...bind()}
-			{...props}>
-			{!isPassageNode && (
-				<Html
-					// To add back so that adding a new conversation is beautiful
-					// style={{ filter: 'blur(10px)' }}
-					position={[0, 0, 0]}>
-					<p className='message_content'>{content}</p>
-				</Html>
-			)}
-		</Circle>
+			{...props}></Circle>
 	)
 })

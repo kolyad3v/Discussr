@@ -85,8 +85,10 @@ class ConversationController extends Controller
 
         return Inertia::render('Dashboard', [
             'conversationsData' => $conversations,
+            'auth' => [
+                'user' => Auth::user()
+            ],
         ]);
-
     }
 
     /**

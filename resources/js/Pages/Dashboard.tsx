@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 export default function Dashboard({ auth, conversationsData }: PageProps) {
 	console.log(conversationsData)
-	const [conversations, setConversations] = useState<IConversation[]>([])
+	const [conversations, setConversations] = useState<any[]>([])
 	const [activeConversationId, setActiveConversationId] = useState<number>(0)
 	const [activeMessages, setActiveMessages] = useState<IActiveMessage[]>([])
 	const [messages, setMessages] = useState<IMessage[]>([])

@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { CssVarsProvider, Grid, Sheet } from '@mui/joy'
 
-import { IActiveMessage, IConversation, IMessage, PageProps } from '@/types'
+import { IActiveMessage, IConversation, PageProps } from '@/types'
 import Header from './Header'
 import SideBar from './SideBar'
 import { useEffect, useState } from 'react'

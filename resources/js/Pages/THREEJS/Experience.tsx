@@ -4,17 +4,7 @@ import { Html, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
 import Message from './Message'
 
-import AddNewFirstMessage from './AddNewFirstMessage'
-
-type godObject = {
-	id: number
-	content: string | null
-	conversation_id: number
-	created_at: string
-	passage_id: number | null
-	passages: PassageType[]
-	position: [number, number, 0]
-}
+import NewFirstMessageButton from './NewFirstMessageButton.js'
 
 const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = ({ activeMessages, activeConversationId }) => {
 	// const { raycaster, scene, pointer, viewport } = useThree()
@@ -36,11 +26,11 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	// 	}
 	// }, [scene, raycaster])
 
-	const explorBranch = (message: any, depth: number) => {
+	const explorBranch = (message: IActiveMessage, depth: number) => {
 		let finalArray = [
 			<Message
 				position={[depth * 20, 0, 0]}
-				content={message.content}
+				message={message.message}
 				createdAt={message.created_at}
 				passages={message.passages}
 				messageId={message.id}
@@ -65,8 +55,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		// }
 
 		for (let message of nextMessages) {
-			debugger
-			let branch = explorBranch(message, depth + 1)
+			// let branch = explorBranch(message, depth + 1)
 			// @ts-ignore
 			// finalArray = [...finalArray, ...branch]
 		}
@@ -74,7 +63,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		return finalArray
 	}
 
-	const getChildren = (passages: []) => {
+	const getChildren = (passages: PassageType[]) => {
 		let relatedMessages = passages.map((passage: PassageType) => {
 			return activeMessages.find((message) => message.passage_id === passage.id)
 		})
@@ -94,6 +83,10 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			/>
 			<ambientLight intensity={0.5} />
 
+			<mesh>
+				<boxGeometry args={[1, 1, 1]} />
+				<meshStandardMaterial color='hotpink' />
+			</mesh>
 			{/* {renderMessages()} */}
 		</>
 	)

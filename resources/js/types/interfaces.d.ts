@@ -38,22 +38,22 @@ export interface IConversationTab {
 }
 
 export type PassageType = {
+	created_at: string
 	id: number
-	start: number
 	length: number
 	message_id: number
+	start: number
 	updated_at: string
-	created_at: string
 }
 
 export interface IActiveMessage {
-	id: number
-	content: null | string
-	created_at: string
-	to_current_user: boolean
-	passage_id: null | number
 	conversation_id: number
+	created_at: string
+	id: number
+	message: string
+	passage_id: null | number
 	passages: PassageType[]
+	updated_at: string
+	user_from_id: number
+	user_to_id: number
 }
-
-export interface IMessage extends IActiveMessage {}

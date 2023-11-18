@@ -11,7 +11,7 @@ import FormatItalic from '@mui/icons-material/FormatItalic'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 
-const FirstMessageEntryForm = ({ activeConversationId, setOpen }: { activeConversationId: number; setOpen: any }) => {
+const FirstMessageForm = ({ activeConversationId, setOpen }: { activeConversationId: number; setOpen: any }) => {
 	const [italic, setItalic] = useState(false)
 	const [bold, setBold] = useState(false)
 	const [netowrking, setNetowrking] = useState(false)
@@ -99,4 +99,4 @@ const FirstMessageEntryForm = ({ activeConversationId, setOpen }: { activeConver
 	)
 }
 
-export default FirstMessageEntryForm
+export default FirstMessageForm

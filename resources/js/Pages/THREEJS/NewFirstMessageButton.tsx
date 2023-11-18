@@ -1,15 +1,14 @@
 import { FC, useState } from 'react'
 import { Button } from '@mui/joy'
-import FadeModalDialog from '../../forms/Modal'
+import GenericModal from '../GenericModal'
 import { Edit } from '@mui/icons-material'
-import FirstMessageEntryForm from './FirstMessageEntryForm'
+import FirstMessageEntryForm from './FirstMessageForm'
 
-interface AddNewConversationProps {
+interface NewFirstMessageButtonProps {
 	activeConversationId: number
 }
-const AddNewConversation: FC<AddNewConversationProps> = ({ activeConversationId }) => {
+const NewFirstMessageButton: FC<NewFirstMessageButtonProps> = ({ activeConversationId }) => {
 	const [open, setOpen] = useState<boolean>(false)
-	console.log(activeConversationId)
 
 	return (
 		<>
@@ -20,7 +19,7 @@ const AddNewConversation: FC<AddNewConversationProps> = ({ activeConversationId 
 				<Edit />
 			</Button>
 
-			<FadeModalDialog
+			<GenericModal
 				width={1080}
 				height={640}
 				open={open}
@@ -29,9 +28,9 @@ const AddNewConversation: FC<AddNewConversationProps> = ({ activeConversationId 
 					setOpen={setOpen}
 					activeConversationId={activeConversationId}
 				/>
-			</FadeModalDialog>
+			</GenericModal>
 		</>
 	)
 }
 
-export default AddNewConversation
+export default NewFirstMessageButton

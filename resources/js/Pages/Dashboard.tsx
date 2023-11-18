@@ -40,6 +40,8 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 		setConversations(enhanceConversationsWithActiveState(conversationsData))
 	}, [conversationsData])
 
+	console.log(activeMessages)
+
 	return (
 		<AuthenticatedLayout user={auth.user}>
 			<CssVarsProvider>

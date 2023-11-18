@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -20,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'username',
         'password',
     ];
 
@@ -42,4 +45,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function conversations():HasMany
+    {
+        return $this->hasMany(Conversation::class, 'user_one_id')
+            ->orWhere('user_two_id', $this->id);
+    }
+
+    public function isParticipant(Conversation $conversation): bool
+    {
+        return $conversation->isParticipant($this);
+    }
+
+    public function avatar():HasOne{
+        return $this->hasOne(Avatar::class);
+    }
+
 }

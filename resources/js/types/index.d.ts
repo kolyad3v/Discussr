@@ -1,3 +1,5 @@
+export * from './interfaces'
+
 export interface User {
 	id: number
 	name: string

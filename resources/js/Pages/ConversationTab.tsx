@@ -50,13 +50,13 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 								<Typography level='body-sm'>Conversation snippet</Typography>
 
 								<IconButton
-									variant='soft'
 									color='danger'
 									style={{ cursor: 'pointer', position: 'absolute', top: 0, right: -58, transition: '0.2s ease-in-out' }}
-									size='sm'>
+									size='xs'>
 									<Clear
 										onClick={handleDelete}
 										fontSize='small'
+										sx={{ fontSize: '16px' }}
 									/>
 								</IconButton>
 							</div>

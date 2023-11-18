@@ -83,10 +83,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			/>
 			<ambientLight intensity={0.5} />
 
-			<mesh>
-				<boxGeometry args={[1, 1, 1]} />
-				<meshStandardMaterial color='hotpink' />
-			</mesh>
+			{activeMessages.length === 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{/* {renderMessages()} */}
 		</>
 	)

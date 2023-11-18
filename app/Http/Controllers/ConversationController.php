@@ -25,7 +25,6 @@ class ConversationController extends Controller
             'messages' => function ($query) {
                 $query->with('passages');
             },
-
             'userOne' => function ($query) {
                 $query->with('avatar');
             },
@@ -56,14 +55,22 @@ class ConversationController extends Controller
     public function store(Request $request)
     {
 
-        // Create separate validation for each request
         $validated = $request->validate([
-            'username' => 'required|exists:users,username',
+            'username' => 'required',
             'label'=> 'required|string|max:40',
         ]);
 
-        // get usertwo id from validated username
-        $userTwoId = User::where('username', $validated['username'])->first()->id;
+        $user = User::where('username', $validated['username'])->first();
+
+        if ($user === null) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        $userTwoId = $user->id;
+
+        if($userTwoId === Auth::id()){
+            return response()->json(['message' => 'You cannot start a conversation with yourself.'], 400);
+        }
 
         Conversation::create([
             'user_one_id' => Auth::id(),
@@ -76,9 +83,11 @@ class ConversationController extends Controller
         $conversations = Auth::user()->conversations;
         $conversations->load('messages','userOne', 'userTwo');
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-        ]);
+        // return Inertia::render('Dashboard', [
+        //     'conversationsData' => $conversations,
+        // ]);
+        // return Inertia::location(route('dashboard'));
+        return response()->json(['message'=> 'Conversation Added!'],200);
     }
 
     /**

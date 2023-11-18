@@ -31,7 +31,7 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 				} else if (err.response && err.response.status === 404) {
 					alert('Incorrect User Details')
 				} else {
-					alert('Something went wrong')
+					alert('Failed to Add Conversation - Sorry! ')
 					console.log(err)
 				}
 			})
@@ -44,7 +44,7 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 					alignItems='stretch'
 					spacing={3}>
 					<FormControl required>
-						<FormLabel>Conversation label</FormLabel>
+						<FormLabel sx={{ fontWeight: 'bold' }}>Conversation Label</FormLabel>
 						<Input
 							variant='soft'
 							color='primary'
@@ -55,7 +55,7 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 						/>
 					</FormControl>
 					<FormControl required>
-						<FormLabel>Invite by Username</FormLabel>
+						<FormLabel sx={{ fontWeight: 'bold' }}>Invite by Username</FormLabel>
 						<Input
 							variant='soft'
 							color='primary'

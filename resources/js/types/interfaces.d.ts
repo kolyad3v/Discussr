@@ -17,12 +17,14 @@ export interface IGenericModal {
 
 export interface IConversation {
 	id: number
-	user_to_id: number
-	user_from_id: number
-	partner_username: string
+	created_at: string
+	messages: []
+	updated_at: string
+	user_one_id: number
+	user_two_id: number
 	label: string
-	snippet: string
-	active: boolean
+	user_one: {}
+	user_two: {}
 }
 
 export interface IConversationTab {

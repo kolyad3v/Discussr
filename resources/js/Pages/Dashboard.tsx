@@ -4,30 +4,37 @@ import { CssVarsProvider, Grid, Sheet } from '@mui/joy'
 import { IActiveMessage, IConversation, IMessage, PageProps } from '@/types'
 import Header from './Header'
 import SideBar from './SideBar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Dashboard({ auth, conversationsData }: PageProps) {
-	console.log(conversationsData)
-	const [conversations, setConversations] = useState<any[]>([])
+	const enhanceConversationsWithActiveState = (conversations: any[]) => {
+		return conversations.map((conversation) => ({
+			...conversation,
+			active: false,
+		}))
+	}
+	const [conversations, setConversations] = useState<IConversation[]>(enhanceConversationsWithActiveState(conversationsData || []))
+	console.log(conversations)
+
 	const [activeConversationId, setActiveConversationId] = useState<number>(0)
 	const [activeMessages, setActiveMessages] = useState<IActiveMessage[]>([])
 	const [messages, setMessages] = useState<IMessage[]>([])
 
 	const setConversationActive = (id: number) => {
 		setActiveConversationId(id)
-		setConversations((prev) => {
-			return prev.map((conversation) => {
-				if (conversation.id === id) {
-					conversation.active = true
-				} else {
-					conversation.active = false
-				}
-				return conversation
-			})
-		})
+		setConversations((prev) =>
+			prev.map((conversation) => ({
+				...conversation,
+				active: conversation.id === id,
+			}))
+		)
 		let activeMessages = messages.filter((message) => message.conversation_id === id)
 		setActiveMessages(activeMessages)
 	}
+
+	useEffect(() => {
+		setConversations(enhanceConversationsWithActiveState(conversationsData))
+	}, [conversationsData])
 
 	return (
 		<AuthenticatedLayout user={auth.user}>

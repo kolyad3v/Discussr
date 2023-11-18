@@ -72,16 +72,18 @@ class ConversationController extends Controller
             return response()->json(['message' => 'You cannot start a conversation with yourself.'], 400);
         }
 
-        Conversation::create([
+        $newConversation = Conversation::create([
             'user_one_id' => Auth::id(),
             'user_two_id' => $userTwoId,
-            'label'=> $validated['label'],
+            'label' => $validated['label'],
         ]);
 
-
-
         $conversations = Auth::user()->conversations;
-        $conversations->load('messages','userOne', 'userTwo');
+        $conversations = Auth::user()->conversations()->with([
+            'messages',
+            'userOne', // Make sure these relationships are correctly defined
+            'userTwo'
+        ])->get();
 
         return Inertia::render('Dashboard', [
             'conversationsData' => $conversations,

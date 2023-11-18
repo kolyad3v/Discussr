@@ -61,4 +61,10 @@ class User extends Authenticatable
         return $this->hasOne(Avatar::class);
     }
 
+    public function getAvatarUrlAttribute()
+    {
+
+        return $this->avatar ? $this->avatar->url : 'default-avatar-url';
+    }
+
 }

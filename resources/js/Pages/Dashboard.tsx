@@ -18,7 +18,6 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 
 	const [activeConversationId, setActiveConversationId] = useState<number>(0)
 	const [activeMessages, setActiveMessages] = useState<IActiveMessage[]>([])
-	const [messages, setMessages] = useState<IMessage[]>([])
 
 	const setConversationActive = (id: number) => {
 		setActiveConversationId(id)
@@ -28,8 +27,13 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 				active: conversation.id === id,
 			}))
 		)
-		let activeMessages = messages.filter((message) => message.conversation_id === id)
-		setActiveMessages(activeMessages)
+		// Find the active conversation
+		const activeConversation = conversations.find((conversation) => conversation.id === id)
+		if (activeConversation && activeConversation.messages) {
+			setActiveMessages(activeConversation.messages)
+		} else {
+			setActiveMessages([]) // Reset or handle no messages case
+		}
 	}
 
 	useEffect(() => {

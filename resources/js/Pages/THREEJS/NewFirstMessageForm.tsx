@@ -44,7 +44,7 @@ const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversa
 				sx={{
 					height: '100%',
 				}}>
-				<FormLabel>Your Message</FormLabel>
+				<FormLabel sx={{ fontWeight: 'bold' }}>The First Message of Many...</FormLabel>
 				<Textarea
 					placeholder='Type something here…'
 					minRows={10}

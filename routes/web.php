@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +37,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+if (app()->environment('local'))
+    {
+        Route::get('/users/{user}/cloak', function (User $user) {
+            Auth::login($user);
+            return redirect()->route('dashboard');
+        });
+    }
+
 
 require __DIR__.'/auth.php';

@@ -1,37 +1,61 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
-import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+import DeleteUserForm from './Partials/DeleteUserForm'
+import UpdatePasswordForm from './Partials/UpdatePasswordForm'
+import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 
-export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ mustVerifyEmail: boolean, status?: string }>) {
-    return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>}
-        >
-            <Head title="Profile" />
+import { Head } from '@inertiajs/react'
+import { PageProps } from '@/types'
+import { Breadcrumbs, Stack, Typography, Link } from '@mui/joy'
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
+export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+	return (
+		<AuthenticatedLayout user={auth.user}>
+			<Stack
+				spacing={4}
+				sx={{
+					display: 'flex',
+					maxWidth: '800px',
+					mx: 'auto',
+					px: {
+						xs: 2,
+						md: 6,
+					},
+					py: {
+						xs: 2,
+						md: 3,
+					},
+				}}>
+				<Breadcrumbs
+					size='sm'
+					aria-label='breadcrumbs'
+					separator={<ChevronRightRoundedIcon fontSize='sm' />}
+					sx={{ pl: 0 }}>
+					<Link
+						href={route('dashboard')}
+						color='neutral'
+						aria-label='Home'>
+						<HomeRoundedIcon />
+					</Link>
 
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
+					<Typography
+						color='neutral'
+						fontWeight={500}
+						fontSize={12}>
+						My profile
+					</Typography>
+				</Breadcrumbs>
+				<UpdateProfileInformationForm
+					mustVerifyEmail={mustVerifyEmail}
+					status={status}
+					className='max-w-xl'
+				/>
 
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
+				<UpdatePasswordForm className='max-w-xl' />
+
+				<DeleteUserForm className='max-w-xl' />
+			</Stack>
+		</AuthenticatedLayout>
+	)
 }

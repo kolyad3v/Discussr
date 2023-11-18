@@ -36,8 +36,8 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 	}
 
 	return (
-		<Stack sx={{ mt: 2 }}>
-			<form onSubmit={submit}>
+		<form onSubmit={submit}>
+			<Stack sx={{ mt: 2 }}>
 				<Stack
 					direction='column'
 					alignItems='stretch'
@@ -76,8 +76,8 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 						Create New Conversation
 					</Button>
 				</Stack>
-			</form>
-		</Stack>
+			</Stack>
+		</form>
 	)
 }
 

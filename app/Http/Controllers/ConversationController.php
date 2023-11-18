@@ -136,7 +136,26 @@ class ConversationController extends Controller
     public function destroy(Conversation $conversation)
     {
         $conversation->delete();
-        return response()->json(['message' => 'Conversation deleted']);
+
+        $conversations = Auth::user()->conversations;
+        $conversations = Auth::user()->conversations()->with([
+            'messages' => function ($query) {
+                $query->with('passages');
+            },
+            'userOne' => function ($query) {
+                $query->with('avatar');
+            },
+            'userTwo' => function ($query) {
+                $query->with('avatar');
+            }
+        ])->get();
+
+        return Inertia::render('Dashboard', [
+            'conversationsData' => $conversations,
+            'auth' => [
+                'user' => Auth::user()
+            ],
+        ]);
     }
 
     public function storeMessage(Request $request, Conversation $conversation)
@@ -145,6 +164,8 @@ class ConversationController extends Controller
             'message' => 'required|string',
             'messageId'=> 'nullable|numeric',
         ]);
+
+        $passage = null; // Initialize $passage variable outside the if block
 
         if($validated['messageId']!== null){
             // create a new passage and get that passage's Id
@@ -164,7 +185,7 @@ class ConversationController extends Controller
             'user_to_id'=> $conversation->user_one_id === Auth::id() ? $conversation->user_two_id : $conversation->user_one_id,
             'message' => $validated['message'],
             // If passage is null, the message is a first message.
-            'passage_id'=>  $request->messageId ? $passage->id : null,
+            'passage_id' => $passage? $passage->id : null,
             'conversation_id'=> $conversation->id,
         ]);
 

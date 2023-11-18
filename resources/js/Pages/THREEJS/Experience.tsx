@@ -39,8 +39,9 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		]
 
 		if (message.passages.length === 0) {
-			return
+			return finalArray
 		}
+
 		let nextMessages = getChildren(message.passages)
 		// let totalHeightNextGeneration = getTotalHeightOfNextGeneration(nextMessages, 10)
 		// let workingYPositionOfNextMessage = totalHeightNextGeneration / 2
@@ -54,25 +55,28 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 		// }
 
-		for (let message of nextMessages) {
-			// let branch = explorBranch(message, depth + 1)
-			// @ts-ignore
-			// finalArray = [...finalArray, ...branch]
+		for (let msg of nextMessages) {
+			if (msg) {
+				// Ensure msg is not undefined
+				let branch = explorBranch(msg, depth + 1)
+				if (branch) {
+					finalArray = [...finalArray, ...branch]
+				}
+			}
 		}
 
 		return finalArray
 	}
 
 	const getChildren = (passages: PassageType[]) => {
-		let relatedMessages = passages.map((passage: PassageType) => {
-			return activeMessages.find((message) => message.passage_id === passage.id)
-		})
+		let relatedMessages = passages.map((passage) => activeMessages.find((message) => message.passage_id === passage.id)).filter((msg) => msg !== undefined)
+
 		return relatedMessages
 	}
 
 	const renderMessages = () => {
 		let firstMessage = activeMessages.find((message) => message.passage_id === null)
-		return explorBranch(firstMessage!, 0)
+		return firstMessage ? explorBranch(firstMessage, 0) : null
 	}
 
 	return (
@@ -85,7 +89,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
-			{activeMessages.length !== 0 &&
+			{/* {activeMessages.length !== 0 &&
 				activeMessages.map((message, index) => (
 					<Message
 						key={message.id}
@@ -96,8 +100,9 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 						messageId={message.id}
 						conversationId={message.conversation_id}
 					/>
-				))}
+				))} */}
 			{/* {renderMessages()} */}
+			{activeMessages.length !== 0 && renderMessages()}
 		</>
 	)
 })

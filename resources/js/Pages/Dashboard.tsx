@@ -15,7 +15,6 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 		}))
 	}
 	const [conversations, setConversations] = useState<IConversation[]>(enhanceConversationsWithActiveState(conversationsData || []))
-	console.log(conversations)
 
 	const [activeConversationId, setActiveConversationId] = useState<number>(0)
 	const [activeMessages, setActiveMessages] = useState<IActiveMessage[]>([])

@@ -16,7 +16,7 @@ class Message extends Model
         'message',
         'user_from_id',
         'user_to_id',
-        'passage_origin_id',
+        'passage_id',
         'conversation_id',
     ];
 

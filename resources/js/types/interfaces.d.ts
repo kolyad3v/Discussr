@@ -25,13 +25,14 @@ export interface IConversation {
 	label: string
 	user_one: {}
 	user_two: {}
+	active: boolean
 }
 
 export interface IConversationTab {
 	id: number
-	partner_username: string
+
 	label: string
-	snippet: string
+
 	active: boolean
 	setConversationActive: (id: number) => void
 }

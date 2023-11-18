@@ -22,7 +22,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import NewConversationButton from './NewConversationButton'
 import { IConversation } from '@/types'
 import { closeSidebar } from './utils'
-// import ConversationTabs from '@/Components/sidebar/Conversations/ConversationTabs'
+import ConversationTabs from './ConversationTabs'
 import { Link } from '@inertiajs/react'
 
 function Toggler({
@@ -56,7 +56,7 @@ function Toggler({
 
 const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; user: any }> = ({ conversations, setConversationActive, user }) => {
 	const [searchInput, setSearchInput] = useState('')
-	const filteredConversations = conversations.filter((conversation) => (conversation.label && conversation.label.includes(searchInput)) || conversation.snippet.includes(searchInput))
+	const filteredConversations = conversations.filter((conversation) => conversation.label && conversation.label.includes(searchInput))
 	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchInput(e.target.value)
 	}
@@ -157,10 +157,10 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 						'--List-nestedInsetStart': '30px',
 						'--ListItem-radius': (theme) => theme.vars.radius.sm,
 					}}>
-					{/* <ConversationTabs
+					<ConversationTabs
 						conversations={searchInput ? filteredConversations : conversations}
 						setConversationActive={setConversationActive}
-					/> */}
+					/>
 				</List>
 			</Box>
 			<Divider />

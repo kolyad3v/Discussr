@@ -24,6 +24,7 @@ const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversa
 		e.preventDefault()
 
 		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
+			preserveState: true,
 			onSuccess: () => {
 				setOpen(false)
 				alert('Message submitted successfully')

@@ -199,31 +199,4 @@ class ConversationController extends Controller
         ]);
     }
 
-    public function storePassage(Request $request, Conversation $conversation, Message $message)
-    {
-        $validated = $request->validate([
-            'message_origin_id' => 'required|exists:messages,id',
-            'start'=> 'required|integer',
-            'length'=> 'required|integer',
-        ]);
-
-        // $passage = $message->passages()->create([
-        //     'user_from_id' => Auth::id(),
-        //     'user_to_id'=> $conversation->user_one_id === Auth::id() ? $conversation->user_two_id : $conversation->user_one_id,
-        //     'passage' => $validated['passage'],
-        //     'passage_origin_id'=>  $request->passage_origin_id && $request->passage_origin_id,
-        //     'conversation_id'=> $conversation->id,
-        //     'message_id'=> $message->id,
-        // ]);
-        // $passage->load('user');
-
-        $passage = Passage::create([
-            'message_origin_id'=> $validated['message_origin_id'],
-            'start'=> $validated['start'],
-            'length'=> $validated['length'],
-        ]);
-        $passage->load('user');
-
-        return $passage;
-    }
 }

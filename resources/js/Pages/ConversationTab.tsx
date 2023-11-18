@@ -1,11 +1,27 @@
-import { ListItem, ListItemButton, ListItemDecorator, Avatar, ListItemContent, ListDivider, Box, Typography } from '@mui/joy'
+import { ListItem, ListItemButton, ListItemDecorator, Avatar, ListItemContent, ListDivider, Box, Typography, IconButton } from '@mui/joy'
 import { FC } from 'react'
 import { IConversationTab } from '@/types'
+import { useForm } from '@inertiajs/react'
+import { Clear } from '@mui/icons-material'
 
 const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversationActive }) => {
 	const style = {
 		backgroundColor: active ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
 		transition: ' 0.2s ease-in-out',
+	}
+
+	const form = useForm({
+		id,
+	}) // Initialize the form
+
+	const handleDelete = () => {
+		if (confirm('Are you sure you want to delete this conversation?')) {
+			form.delete(route('api.conversations.destroy', id), {
+				onSuccess: () => {
+					alert('Conversation deleted successfully!')
+				},
+			})
+		}
 	}
 
 	return (
@@ -21,18 +37,28 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 					</ListItemDecorator>
 					<ListItemContent>
 						{/* @ts-ignore */}
-						<Box sx={{ pl: 2, width: '100%' }}>
-							<Box
-								sx={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									mb: 0.5,
-								}}>
-								<Typography level='body-xs'>Username</Typography>
-							</Box>
-							<div>
+						<Box sx={{ pl: 2, width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+							<div style={{ position: 'relative' }}>
+								<Box
+									sx={{
+										mb: 0.5,
+									}}>
+									<Typography level='body-xs'>Username</Typography>
+								</Box>
+
 								<Typography sx={{ mb: 0.5 }}>{label}</Typography>
 								<Typography level='body-sm'>Conversation snippet</Typography>
+
+								<IconButton
+									variant='soft'
+									color='danger'
+									style={{ cursor: 'pointer', position: 'absolute', top: 0, right: -58, transition: '0.2s ease-in-out' }}
+									size='sm'>
+									<Clear
+										onClick={handleDelete}
+										fontSize='small'
+									/>
+								</IconButton>
 							</div>
 						</Box>
 					</ListItemContent>

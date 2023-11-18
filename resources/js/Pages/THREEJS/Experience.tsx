@@ -1,6 +1,6 @@
 import { FC, memo, useCallback } from 'react'
 import { useThree } from '@react-three/fiber'
-import { Html, OrbitControls } from '@react-three/drei'
+import { Html, Text, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
 import Message from './Message'
 
@@ -82,8 +82,9 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 				enableZoom={true}
 			/>
 			<ambientLight intensity={0.5} />
+			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 
-			{activeMessages.length === 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
+			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{/* {renderMessages()} */}
 		</>
 	)

@@ -81,8 +81,12 @@ class ConversationController extends Controller
         $conversations = Auth::user()->conversations;
         $conversations = Auth::user()->conversations()->with([
             'messages',
-            'userOne', // Make sure these relationships are correctly defined
-            'userTwo'
+            'userOne' => function ($query) {
+                $query->with('avatar');
+            },
+            'userTwo' => function ($query) {
+                $query->with('avatar');
+            }
         ])->get();
 
         return Inertia::render('Dashboard', [

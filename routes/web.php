@@ -50,5 +50,8 @@ if (app()->environment('local'))
         });
     }
 
+Route::get('/whoami', function () {
+    return Auth::user();
+});
 
 require __DIR__.'/auth.php';

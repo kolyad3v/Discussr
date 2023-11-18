@@ -3,8 +3,8 @@ import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useForm } from '@inertiajs/react'
 import axios from 'axios'
 
-const NewConversationForm: FC = () => {
-	const { data, setData, post, processing, errors, reset } = useForm({
+const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
+	const { data, setData, processing, reset } = useForm({
 		label: '',
 		username: '',
 	})
@@ -21,12 +21,21 @@ const NewConversationForm: FC = () => {
 			.post(route('api.conversations.store'), data)
 			.then(() => {
 				reset('label', 'username')
+				alert('Conversation created successfully')
+				setOpen(false)
 			})
 			.catch((err: any) => {
-				console.error(err)
+				if (err.response && err.response.status === 400) {
+					alert('You cannot start a conversation with yourself.')
+					setData('username', '')
+				} else if (err.response && err.response.status === 404) {
+					alert('Incorrect User Details')
+				} else {
+					alert('Something went wrong')
+					console.log(err)
+				}
 			})
 	}
-
 	return (
 		<Stack sx={{ mt: 2 }}>
 			<form onSubmit={submit}>

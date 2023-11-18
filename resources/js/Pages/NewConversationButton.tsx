@@ -21,7 +21,7 @@ const NewConversationButton: FC = () => {
 				height={480}
 				open={open}
 				setOpen={setOpen}>
-				<NewConversationForm />
+				<NewConversationForm setOpen={setOpen} />
 			</GenericModal>
 		</>
 	)

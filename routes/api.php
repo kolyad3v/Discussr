@@ -1,4 +1,8 @@
 <?php
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\ProfileController;
+
+use App\Models\Conversation;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +26,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/conversations', [ConversationController::class, 'index'])
     ->name('api.conversations.index')
     ->can('viewAny', Conversation::class);
+
+    Route::post('/profile/{user}/avatar', [ProfileController::class, 'storeAvatar'])
+    ->name('api.profile.avatar.store')
+    ->can('storeAvatar', 'user');
 });

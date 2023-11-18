@@ -46,7 +46,6 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 							xs
 							sx={{ zIndex: 0 }}>
 							<h2> Main</h2>
-							Sh S
 						</Grid>
 					</Grid>
 				</Sheet>

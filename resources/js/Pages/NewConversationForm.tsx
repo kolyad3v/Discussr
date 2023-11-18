@@ -1,10 +1,9 @@
 import React, { FC, useEffect } from 'react'
 import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useForm } from '@inertiajs/react'
-import axios from 'axios'
 
 const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
-	const { data, setData, processing, reset } = useForm({
+	const { data, setData, processing, post, reset } = useForm({
 		label: '',
 		username: '',
 	})
@@ -16,26 +15,26 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 
 	const submit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		//@ts-ignore
-		axios
-			.post(route('api.conversations.store'), data)
-			.then(() => {
+		post(route('api.conversations.store'), {
+			onSuccess: () => {
 				reset('label', 'username')
-				alert('Conversation created successfully')
+				alert('Conversation Created Successfully')
 				setOpen(false)
-			})
-			.catch((err: any) => {
-				if (err.response && err.response.status === 400) {
+			},
+			onError: (err) => {
+				if (typeof err.response === 'object' && (err.response as any).status === 400) {
 					alert('You cannot start a conversation with yourself.')
 					setData('username', '')
-				} else if (err.response && err.response.status === 404) {
+				} else if (typeof err.response === 'object' && (err.response as any).status === 404) {
 					alert('Incorrect User Details')
 				} else {
 					alert('Failed to Add Conversation - Sorry! ')
 					console.log(err)
 				}
-			})
+			},
+		})
 	}
+
 	return (
 		<Stack sx={{ mt: 2 }}>
 			<form onSubmit={submit}>

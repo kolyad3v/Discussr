@@ -83,11 +83,10 @@ class ConversationController extends Controller
         $conversations = Auth::user()->conversations;
         $conversations->load('messages','userOne', 'userTwo');
 
-        // return Inertia::render('Dashboard', [
-        //     'conversationsData' => $conversations,
-        // ]);
-        // return Inertia::location(route('dashboard'));
-        return response()->json(['message'=> 'Conversation Added!'],200);
+        return Inertia::render('Dashboard', [
+            'conversationsData' => $conversations,
+        ]);
+
     }
 
     /**

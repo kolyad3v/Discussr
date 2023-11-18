@@ -7,7 +7,7 @@ import { FC, useCallback, useMemo, useState } from 'react'
 import { PassageType } from '@/types'
 
 import GenericModal from '../GenericModal'
-import MessageEntryBox from './NewMessageForm'
+import NewMessageForm from './NewMessageForm'
 
 type MessageDisplayBoxProps = {
 	children: React.ReactNode
@@ -94,9 +94,10 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				height={640}
 				open={open}
 				setOpen={setOpen}>
-				<MessageEntryBox
-					conversationId={conversationId}
+				<NewMessageForm
+					activeConversationId={conversationId}
 					messageId={messageId}
+					setOpen={setOpen}
 				/>
 			</GenericModal>
 		</>

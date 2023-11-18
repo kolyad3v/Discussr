@@ -11,6 +11,7 @@ import { useState, useCallback } from 'react'
 import { useForm } from '@inertiajs/react'
 
 const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversationId: number; setOpen: any }) => {
+	console.log(activeConversationId)
 	const [italic, setItalic] = useState(false)
 	const [bold, setBold] = useState(false)
 
@@ -25,6 +26,7 @@ const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversa
 		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
 			onSuccess: () => {
 				setOpen(false)
+				alert('Message submitted successfully')
 				form.reset('message')
 			},
 			onError: () => {

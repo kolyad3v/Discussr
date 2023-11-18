@@ -8,89 +8,91 @@ import FormatBold from '@mui/icons-material/FormatBold'
 import FormatItalic from '@mui/icons-material/FormatItalic'
 
 import { useState, useCallback } from 'react'
-import axios from 'axios'
+import { useForm } from '@inertiajs/react'
 
-const NewMessageForm = ({ conversationId, messageId }: { conversationId: number; messageId: number | null }) => {
+const NewMessageForm = ({ activeConversationId, setOpen, messageId }: { activeConversationId: number; setOpen: any; messageId: number }) => {
 	const [italic, setItalic] = useState(false)
 	const [bold, setBold] = useState(false)
-	const [netowrking, setNetowrking] = useState(false)
-	const [message, setMessage] = useState<string>('')
 
-	const submitMessage = useCallback((message: string): void => {
-		setNetowrking(true)
-		console.log(`submitting message with message id ${messageId} and convo id ${conversationId}`)
-		axios
-			.post(route('api.conversations.messages.store', { conversation: conversationId }), { message, messageId })
-			.then((response) => {
-				console.log(response.data)
-				alert('Message Submitted')
-				setNetowrking(false)
-			})
-			.catch((error) => {
-				console.error(error)
-				alert('Error submitting message')
-				setNetowrking(false)
-			})
-	}, [])
+	const form = useForm({
+		message: '',
+		messageId,
+	})
+
+	const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
+		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
+			onSuccess: () => {
+				setOpen(false)
+				form.reset('message')
+			},
+			onError: () => {
+				alert('Message submission failed')
+			},
+		})
+	}
 
 	return (
-		<FormControl
-			sx={{
-				width: 'auto',
-				height: '100%',
-			}}>
-			<FormLabel>Your Message</FormLabel>
-			<Textarea
-				placeholder='Type something here…'
-				minRows={10}
-				value={message}
-				onChange={(e) => setMessage(e.target.value)}
-				endDecorator={
-					// @ts-ignore
-					<Box
-						// @ts-ignore
-						sx={{
-							display: 'flex',
-							gap: 'var(--Textarea-paddingBlock)',
-							pt: 'var(--Textarea-paddingBlock)',
-							borderTop: '1px solid',
-							borderColor: 'divider',
-							flex: 'auto',
-						}}>
-						<IconButton
-							variant={bold ? 'soft' : 'plain'}
-							color={bold ? 'primary' : 'neutral'}
-							aria-pressed={bold}
-							onClick={() => setBold((bool) => !bool)}>
-							<FormatBold />
-						</IconButton>
-
-						<IconButton
-							variant={italic ? 'soft' : 'plain'}
-							color={italic ? 'primary' : 'neutral'}
-							aria-pressed={italic}
-							onClick={() => setItalic((bool) => !bool)}>
-							<FormatItalic />
-						</IconButton>
-						<Button
-							variant='soft'
-							color='primary'
-							disabled={netowrking}
-							onClick={() => submitMessage(message)}
-							sx={{ ml: 'auto', transition: 'all 0.2s ease-in-out' }}>
-							{netowrking ? 'Submitting...' : 'Submit'}
-						</Button>
-					</Box>
-				}
+		<form onSubmit={submitMessage}>
+			<FormControl
 				sx={{
-					minWidth: 300,
-					fontWeight: bold ? 'bold' : 'normal',
-					fontStyle: italic ? 'italic' : 'initial',
+					width: 'auto',
 					height: '100%',
-					p: 2,
-				}}
-			/>
-		</FormControl>
+				}}>
+				<FormLabel>Your Message</FormLabel>
+				<Textarea
+					placeholder='Type something here…'
+					minRows={10}
+					value={form.data.message}
+					onChange={(e) => form.setData('message', e.target.value)}
+					endDecorator={
+						// @ts-ignore
+						<Box
+							// @ts-ignore
+							sx={{
+								display: 'flex',
+								gap: 'var(--Textarea-paddingBlock)',
+								pt: 'var(--Textarea-paddingBlock)',
+								borderTop: '1px solid',
+								borderColor: 'divider',
+								flex: 'auto',
+							}}>
+							<IconButton
+								variant={bold ? 'soft' : 'plain'}
+								color={bold ? 'primary' : 'neutral'}
+								aria-pressed={bold}
+								onClick={() => setBold((bool) => !bool)}>
+								<FormatBold />
+							</IconButton>
+
+							<IconButton
+								variant={italic ? 'soft' : 'plain'}
+								color={italic ? 'primary' : 'neutral'}
+								aria-pressed={italic}
+								onClick={() => setItalic((bool) => !bool)}>
+								<FormatItalic />
+							</IconButton>
+							<Button
+								type='submit'
+								variant='soft'
+								color='primary'
+								disabled={form.processing}
+								sx={{ ml: 'auto', transition: 'all 0.2s ease-in-out' }}>
+								{form.processing ? 'Submitting...' : 'Submit'}
+							</Button>
+						</Box>
+					}
+					sx={{
+						minWidth: 300,
+						fontWeight: bold ? 'bold' : 'normal',
+						fontStyle: italic ? 'italic' : 'initial',
+						height: '100%',
+						p: 2,
+					}}
+				/>
+			</FormControl>
+		</form>
 	)
 }
 

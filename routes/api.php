@@ -31,6 +31,10 @@ Route::middleware('auth:sanctum')->group(function(){
     ->name('api.conversations.store')
     ->can('create', Conversation::class);
 
+    Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])
+    ->name('api.conversations.messages.store')
+    ->can('createMessage', 'conversation');
+
     Route::post('/profile/{user}/avatar', [ProfileController::class, 'storeAvatar'])
     ->name('api.profile.avatar.store')
     ->can('storeAvatar','user');

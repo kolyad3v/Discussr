@@ -147,10 +147,13 @@ class ConversationController extends Controller
         if($validated['messageId']!== null){
             // create a new passage and get that passage's Id
             // TODO add Passage details to request body and validate
+            $messageLength = strlen($validated['message']);
+            $startMax = $messageLength > 100 ? $messageLength - 100 : 0; // Ensure $startMax is not negative
+
             $passage = Passage::create([
-                'start'=> fake()->numberBetween(0, 100),
-                'length'=> fake()->numberBetween(0, 100),
-                'message_id'=> $validated['messageId'],
+                'start' => fake()->numberBetween(0, $startMax),
+                'length' => fake()->numberBetween(0, 100),
+                'message_id' => $validated['messageId'],
             ]);
         }
 
@@ -171,11 +174,24 @@ class ConversationController extends Controller
         //     'conversation_id'=> $conversation->id,
 
         // ]);
+
+
         $conversations = Auth::user()->conversations;
-        $conversations->load('messages','userOne', 'userTwo');
+        $conversations = Auth::user()->conversations()->with([
+            'messages',
+            'userOne' => function ($query) {
+                $query->with('avatar');
+            },
+            'userTwo' => function ($query) {
+                $query->with('avatar');
+            }
+        ])->get();
 
         return Inertia::render('Dashboard', [
             'conversationsData' => $conversations,
+            'auth' => [
+                'user' => Auth::user()
+            ],
         ]);
     }
 

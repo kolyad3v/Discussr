@@ -26,6 +26,7 @@ const NewMessageForm = ({ activeConversationId, setOpen, messageId }: { activeCo
 		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
 			onSuccess: () => {
 				setOpen(false)
+				alert('Message submitted successfully')
 				form.reset('message')
 			},
 			onError: () => {

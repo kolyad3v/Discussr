@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Cache;
+use App\Mail\NewConversationMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class ConversationController extends Controller
 {
@@ -77,6 +80,8 @@ class ConversationController extends Controller
             'user_two_id' => $userTwoId,
             'label' => $validated['label'],
         ]);
+
+        Mail::to($user->email)->send(new NewConversationMail($newConversation, $user));
 
         $conversations = Auth::user()->conversations;
         $conversations = Auth::user()->conversations()->with([

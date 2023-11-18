@@ -5,6 +5,7 @@ import { IActiveMessage, IConversation, PageProps } from '@/types'
 import Header from './Header'
 import SideBar from './SideBar'
 import { useEffect, useState } from 'react'
+import Main from './THREEJS/Main'
 
 export default function Dashboard({ auth, conversationsData }: PageProps) {
 	const enhanceConversationsWithActiveState = (conversations: any[]) => {
@@ -27,12 +28,11 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 				active: conversation.id === id,
 			}))
 		)
-		// Find the active conversation
 		const activeConversation = conversations.find((conversation) => conversation.id === id)
 		if (activeConversation && activeConversation.messages) {
 			setActiveMessages(activeConversation.messages)
 		} else {
-			setActiveMessages([]) // Reset or handle no messages case
+			setActiveMessages([])
 		}
 	}
 
@@ -58,7 +58,10 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 						<Grid
 							xs
 							sx={{ zIndex: 0 }}>
-							<h2> Main</h2>
+							<Main
+								activeMessages={activeMessages}
+								activeConversationId={activeConversationId}
+							/>
 						</Grid>
 					</Grid>
 				</Sheet>

@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { FC, memo, useCallback } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Html, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
@@ -6,7 +6,7 @@ import Message from './Message'
 
 import NewFirstMessageButton from './NewFirstMessageButton.js'
 
-const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = ({ activeMessages, activeConversationId }) => {
+const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
 	// const { raycaster, scene, pointer, viewport } = useThree()
 
 	// const createPassage = useCallback(() => {
@@ -90,6 +90,6 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{/* {renderMessages()} */}
 		</>
 	)
-}
+})
 
 export default Experience

@@ -12,8 +12,16 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	const { camera } = useThree()
 	const controlsRef = useRef<any>()
 	const [moving, setMoving] = useState(false)
+	const [startTargetPos, setStartTargetPos] = useState(new THREE.Vector3())
+	const [endTargetPos, setEndTargetPos] = useState(new THREE.Vector3())
 
 	const [targetPosition, setTargetPosition] = useState<[number, number, number]>()
+
+	const startMovingToTarget = (newTargetPos) => {
+		setStartTargetPos(controlsRef.current.target.clone())
+		setEndTargetPos(new THREE.Vector3(newTargetPos[0], newTargetPos[1], newTargetPos[2]))
+		setMoving(true)
+	}
 
 	let messagePassageIdToPositionMap = new Map<number | null, [number, number, number]>()
 
@@ -24,7 +32,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			if (targetPos) {
 				console.log('clicked')
 				setTargetPosition(targetPos)
-				controlsRef.current.target.set(targetPos[0], targetPos[1], targetPos[2])
+				startMovingToTarget(targetPos)
 				setMoving(true)
 			}
 		},
@@ -33,13 +41,24 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	useFrame(() => {
 		if (moving) {
-			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], 40), 0.05)
-			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], 40)) < 1.0) {
+			// Interpolate camera position
+			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], 40), 0.1)
+
+			// Interpolate controls target
+			controlsRef.current.target.lerp(endTargetPos, 0.1)
+			controlsRef.current.update()
+
+			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], 40)) < 1.0 && controlsRef.current.target.distanceTo(endTargetPos) < 1.0) {
 				setMoving(false)
 			}
 		}
-		return null
 	})
+
+	useEffect(() => {
+		if (moving) {
+			controlsRef.current.target.copy(startTargetPos) // Initialize the target position
+		}
+	}, [moving, startTargetPos])
 
 	const gapY = 25 // Vertical spacing between messages
 

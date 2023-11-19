@@ -33,8 +33,8 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	useFrame(() => {
 		if (moving) {
-			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], 40), 0.3)
-			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], 40)) < 0.1) {
+			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], 40), 0.05)
+			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], 40)) < 1.0) {
 				setMoving(false)
 			}
 		}

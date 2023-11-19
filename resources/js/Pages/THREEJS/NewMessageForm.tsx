@@ -23,16 +23,15 @@ const NewMessageForm = ({
 }) => {
 	const [italic, setItalic] = useState(false)
 	const [bold, setBold] = useState(false)
-	console.log(passageInfo)
 
+	// only opens this form if passageInfo is not null
 	const form = useForm({
 		message: '',
 		messageId,
-		passageStart: passageInfo.start,
-		passageLength: passageInfo.length,
+		passageStart: passageInfo!.start,
+		passageLength: passageInfo!.length,
 	})
-
-	console.log(form.data)
+	console.log(form)
 	const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 

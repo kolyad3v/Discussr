@@ -18,9 +18,10 @@ type MessageDisplayBoxProps = {
 	passages: PassageType[]
 	conversationId: number
 	messageId: number
+	user: string
 }
 
-const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, passages, conversationId, messageId, handlePassageClick }) => {
+const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, passages, conversationId, messageId, handlePassageClick, user }) => {
 	const getTitleSnippetFromChildren = useCallback(() => {
 		if (children && typeof children === 'string') {
 			const match = children.match(/^(\S+\s){0,4}\S+/)
@@ -125,7 +126,9 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				sx={{ width: 640 }}>
 				<div>
 					<Typography level='title-lg'>{titleSnippet}</Typography>
-					<Typography level='body-sm'>{createdAt}</Typography>
+					<Typography level='body-sm'>
+						{createdAt} by {user}
+					</Typography>
 					<IconButton
 						aria-label='share'
 						variant='soft'

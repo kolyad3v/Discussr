@@ -8,7 +8,8 @@ import NewFirstMessageButton from './NewFirstMessageButton.js'
 import * as THREE from 'three'
 // import { PassageNodes, Node } from './PassageNodes.jsx'
 
-const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
+//TODO: go through and update any types
+const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number; user: any }> = memo(({ activeMessages, activeConversationId, user }) => {
 	const fixedCameraZPosition = 40
 	const { camera } = useThree()
 	const controlsRef = useRef<any>()
@@ -70,6 +71,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		messagePassageIdToPositionMap.set(message.passage_id, messagePosition)
 		let finalArray = [
 			<Message
+				user={user.id === message.user_from_id ? user.username : 'From other person'}
 				handlePassageClick={handlePassageClick}
 				position={[depth * 20, yPosition, 0]}
 				message={message.message}

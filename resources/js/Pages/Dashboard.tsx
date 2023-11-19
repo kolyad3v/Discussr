@@ -35,7 +35,6 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 		}
 	}
 
-	// write a function to find the first conversationId
 	const updateConversationActive = () => {
 		if (activeConversationId !== 0) {
 			setConversationActive(activeConversationId)
@@ -49,8 +48,9 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 		updateConversationActive()
 	}, [conversationsData])
 
+	console.log(conversationsData)
 	console.log(activeMessages, 'active messages')
-
+	console.log(auth.user)
 	return (
 		<AuthenticatedLayout user={auth.user}>
 			<CssVarsProvider>
@@ -68,6 +68,7 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 							xs
 							sx={{ zIndex: 0 }}>
 							<Main
+								user={auth.user}
 								activeMessages={activeMessages}
 								activeConversationId={activeConversationId}
 							/>

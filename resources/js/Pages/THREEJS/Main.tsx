@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import Experience from './Experience'
 import { IActiveMessage } from '@/types'
 
-const Main: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = ({ activeMessages, activeConversationId }) => {
+const Main: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number; user: any }> = ({ activeMessages, activeConversationId, user }) => {
 	console.log('canvas re render')
 	return (
 		<Canvas
@@ -14,6 +14,7 @@ const Main: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number 
 				position: [0, 0, 40],
 			}}>
 			<Experience
+				user={user}
 				activeMessages={activeMessages}
 				activeConversationId={activeConversationId}
 			/>

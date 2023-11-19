@@ -5,6 +5,7 @@ import { IActiveMessage, PassageType } from '../../types/index.js'
 import Message from './Message'
 
 import NewFirstMessageButton from './NewFirstMessageButton.js'
+import { PassageNodes, Node } from './PassageNodes.jsx'
 
 const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
 	// const { raycaster, scene, pointer, viewport } = useThree()
@@ -26,12 +27,14 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	// 	}
 	// }, [scene, raycaster])
 
-	const gapY = 10 // Adjust this value as needed for vertical spacing
+	const gapY = 15 // Vertical spacing between messages
 
 	const explorBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
+		let yPosition = (siblingIndex % 2 === 0 ? 1 : -1) * Math.floor(siblingIndex / 2) * gapY
+
 		let finalArray = [
 			<Message
-				position={[depth * 20, -siblingIndex * gapY, 0]} // Adjust y position based on sibling index
+				position={[depth * 20, yPosition, 0]}
 				message={message.message}
 				createdAt={message.created_at}
 				passages={message.passages}
@@ -40,15 +43,11 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			/>,
 		]
 
-		if (message.passages.length === 0) {
-			return finalArray
-		}
+		let childMessages = getChildren(message.passages)
 
-		let nextMessages = getChildren(message.passages)
-
-		nextMessages.forEach((msg, index) => {
-			if (msg) {
-				let branch = explorBranch(msg, depth + 1, index) // Pass index as siblingIndex
+		childMessages.forEach((childMessage, index: number) => {
+			if (childMessage) {
+				let branch = explorBranch(childMessage, depth + 1, index)
 				if (branch) {
 					finalArray = [...finalArray, ...branch]
 				}
@@ -59,9 +58,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	}
 
 	const getChildren = (passages: PassageType[]) => {
-		let relatedMessages = passages.map((passage) => activeMessages.find((message) => message.passage_id === passage.id)).filter((msg) => msg !== undefined)
-
-		return relatedMessages
+		return passages.map((passage) => activeMessages.find((message) => message.passage_id === passage.id)).filter((msg) => msg !== undefined)
 	}
 
 	const renderMessages = () => {
@@ -69,8 +66,8 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		return firstMessage ? explorBranch(firstMessage, 0) : null
 	}
 
-	const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
-	const [nodes, setNodes] = useState<{ message: string; ref: any; color: string; position: number[]; connectedTo: any[]; isPassageNode: boolean }[]>([])
+	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
+	const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
 
 	return (
 		<>
@@ -83,21 +80,18 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
 
-			{/* {nodes.length > 0 && (
-					<PassageNodes>
-						{nodes.map((node, index) => (
-							<Node
-								key={index}
-								ref={node.ref}
-								message={node.message}
-								color={node.color}
-								position={node.position}
-								connectedTo={node.connectedTo}
-								isPassageNode={node.isPassageNode}
-							/>
-						))}
-					</PassageNodes>
-				)} */}
+			{nodes.length > 0 && (
+				<PassageNodes>
+					{nodes.map((node, index) => (
+						<Node
+							key={index}
+							ref={node.ref}
+							position={node.position}
+							connectedTo={node.connectedTo}
+						/>
+					))}
+				</PassageNodes>
+			)}
 		</>
 	)
 })

@@ -27,10 +27,10 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	// 	}
 	// }, [scene, raycaster])
 
-	const gapY = 15 // Vertical spacing between messages
-
+	const gapY = 25 // Vertical spacing between messages
+	let gapYIncrement = 0.01
 	const explorBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
-		let yPosition = (siblingIndex % 2 === 0 ? 1 : -1) * Math.floor(siblingIndex / 2) * gapY
+		let yPosition = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
 
 		let finalArray = [
 			<Message
@@ -67,7 +67,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	}
 
 	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
-	const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
+	// const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
 
 	return (
 		<>
@@ -79,7 +79,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
-
+			{/*
 			{nodes.length > 0 && (
 				<PassageNodes>
 					{nodes.map((node, index) => (
@@ -91,7 +91,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 						/>
 					))}
 				</PassageNodes>
-			)}
+			)} */}
 		</>
 	)
 })

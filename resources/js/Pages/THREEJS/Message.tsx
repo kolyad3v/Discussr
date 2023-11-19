@@ -15,9 +15,6 @@ type MessageProps = {
 	conversationId: number
 }
 const Message: FC<MessageProps> = ({ position, message, createdAt, passages, messageId, conversationId }) => {
-	const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
-	const [nodes, setNodes] = useState<{ message: string; ref: any; color: string; position: number[]; connectedTo: any[]; isPassageNode: boolean }[]>([])
-
 	const dateForHumans = new Date(createdAt).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 
 	return (

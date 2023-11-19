@@ -9,6 +9,7 @@ import * as THREE from 'three'
 // import { PassageNodes, Node } from './PassageNodes.jsx'
 
 const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
+	const fixedCameraZPosition = 40
 	const { camera } = useThree()
 	const controlsRef = useRef<any>()
 	const [moving, setMoving] = useState(false)
@@ -42,13 +43,13 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	useFrame(() => {
 		if (moving) {
 			// Interpolate camera position
-			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], 40), 0.1)
+			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], fixedCameraZPosition), 0.1)
 
 			// Interpolate controls target
-			controlsRef.current.target.lerp(endTargetPos, 0.1)
+			controlsRef.current.target.lerp(endTargetPos, 0.05)
 			controlsRef.current.update()
 
-			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], 40)) < 1.0 && controlsRef.current.target.distanceTo(endTargetPos) < 1.0) {
+			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], fixedCameraZPosition)) < 0.5 && controlsRef.current.target.distanceTo(endTargetPos) < 0.5) {
 				setMoving(false)
 			}
 		}

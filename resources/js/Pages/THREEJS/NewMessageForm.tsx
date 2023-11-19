@@ -10,16 +10,29 @@ import FormatItalic from '@mui/icons-material/FormatItalic'
 import { useState, useCallback } from 'react'
 import { useForm } from '@inertiajs/react'
 
-const NewMessageForm = ({ activeConversationId, setOpen, messageId }: { activeConversationId: number; setOpen: any; messageId: number }) => {
-	console.log('new message id', messageId)
+const NewMessageForm = ({
+	activeConversationId,
+	setOpen,
+	messageId,
+	passageInfo,
+}: {
+	activeConversationId: number
+	setOpen: any
+	messageId: number
+	passageInfo: { start: number; length: number } | null
+}) => {
 	const [italic, setItalic] = useState(false)
 	const [bold, setBold] = useState(false)
+	console.log(passageInfo)
 
 	const form = useForm({
 		message: '',
 		messageId,
+		passageStart: passageInfo.start,
+		passageLength: passageInfo.length,
 	})
 
+	console.log(form.data)
 	const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 

@@ -3,11 +3,12 @@ import CardContent from '@mui/joy/CardContent'
 import IconButton from '@mui/joy/IconButton'
 import Typography from '@mui/joy/Typography'
 import { Share } from '@mui/icons-material'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PassageType } from '@/types'
 
 import GenericModal from '../GenericModal'
 import NewMessageForm from './NewMessageForm'
+import zIndex from '@mui/material/styles/zIndex'
 
 type MessageDisplayBoxProps = {
 	children: React.ReactNode
@@ -25,7 +26,6 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		}
 	}, [children])
 
-	console.log('message passages!', passages)
 	const titleSnippet = getTitleSnippetFromChildren()
 
 	const [hover, setHover] = useState(false)
@@ -70,9 +70,51 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 	}, [children, passages, hoveredIndex])
 
 	const [open, setOpen] = useState<boolean>(false)
+	const [passageInfo, setPassageInfo] = useState<{ start: number; length: number } | null>(null)
+
+	const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0 })
+	const textRef = useRef(!null)
+
+	const handleContextMenu = useCallback((event: any) => {
+		event.preventDefault()
+		const selection = window.getSelection()
+		if (selection!.toString().trim() !== '') {
+			const start = selection!.anchorOffset // Assuming this is the correct logic for your use case
+			const length = selection!.toString().length
+
+			setPassageInfo({ start, length })
+			setContextMenu({
+				visible: true,
+				x: event.clientX,
+				y: event.clientY,
+				// selection: selection.toString(),
+				// start: selection.anchorOffset,
+				// length: selection.toString().length,
+			})
+		}
+	}, [])
+
+	console.log(passageInfo)
+	useEffect(() => {
+		const handleDocumentClick = (event) => {
+			// Check if the click is outside the context menu
+			if (contextMenu.visible && !textRef.current.contains(event.target)) {
+				setContextMenu({ visible: false, x: 0, y: 0 })
+				// Don't reset passageInfo here
+			}
+		}
+
+		document.addEventListener('click', handleDocumentClick)
+		return () => {
+			document.removeEventListener('click', handleDocumentClick)
+		}
+	}, [contextMenu.visible, textRef])
 
 	return (
-		<>
+		<div
+			style={{ zIndex: 999 }}
+			onContextMenu={handleContextMenu}
+			ref={textRef}>
 			<Card
 				color='primary'
 				variant='soft'
@@ -88,15 +130,6 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 						sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem', transition: 'all 0.2s ease-in-out' }}>
 						<Share />
 					</IconButton>
-					<IconButton
-						aria-label='new message'
-						variant='soft'
-						color='primary'
-						size='lg'
-						sx={{ position: 'absolute', top: '0.875rem', right: '3rem', transition: 'all 0.2s ease-in-out' }}
-						onClick={() => setOpen(true)}>
-						+
-					</IconButton>
 				</div>
 
 				<CardContent orientation='horizontal'>
@@ -108,13 +141,28 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				height={640}
 				open={open}
 				setOpen={setOpen}>
-				<NewMessageForm
-					activeConversationId={conversationId}
-					messageId={messageId}
-					setOpen={setOpen}
-				/>
+				{passageInfo && (
+					<NewMessageForm
+						activeConversationId={conversationId}
+						messageId={messageId}
+						setOpen={setOpen}
+						passageInfo={passageInfo}
+					/>
+				)}
 			</GenericModal>
-		</>
+			{contextMenu.visible && (
+				<div style={{ position: 'absolute', top: contextMenu.y, left: contextMenu.x - 500 }}>
+					<IconButton
+						aria-label='new message'
+						variant='soft'
+						color='danger'
+						sx={{ transition: 'all 0.2s ease-in-out', height: '10rem', width: '10rem', zIndex: 1000 }}
+						onClick={() => setOpen(true)}>
+						New Message
+					</IconButton>
+				</div>
+			)}
+		</div>
 	)
 }
 export default MessageDisplayBox

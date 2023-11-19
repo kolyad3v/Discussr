@@ -167,31 +167,24 @@ class ConversationController extends Controller
     {
         $validated = $request->validate([
             'message' => 'required|string',
-            'messageId'=> 'nullable|numeric',
+            'messageId'=> 'required|numeric',
+            'passageStart'=> 'required|numeric',
+            'passageLength'=> 'required|numeric'
         ]);
 
+        $passage = Passage::create([
+            'start' => $validated['passageStart'],
+            'length' => $validated['passageLength'],
+            'message_id' => $validated['messageId'],
+        ]);
 
-
-        if($validated['messageId']!== null){
-            // create a new passage and get that passage's Id
-            // TODO add Passage details to request body and validate
-            $messageLength = strlen($validated['message']);
-            $startMax = $messageLength > 100 ? $messageLength - 100 : 0; // Ensure $startMax is not negative
-
-            $passage = Passage::create([
-                'start' => fake()->numberBetween(0, $startMax),
-                'length' => fake()->numberBetween(0, 100),
-                'message_id' => $validated['messageId'],
-            ]);
-        }
 
         $conversation->messages()->create([
             'user_from_id' => Auth::id(),
             'user_to_id'=> $conversation->user_one_id === Auth::id() ? $conversation->user_two_id : $conversation->user_one_id,
             'message' => $validated['message'],
-            // If passage is null, the message is a first message.
-            'passage_id' => $passage ? $passage->id : null,
-            'conversation_id'=> $conversation->id,
+            'passage_id' => $passage->id,
+
         ]);
 
 
@@ -230,7 +223,7 @@ class ConversationController extends Controller
             'message' => $validated['message'],
             // If passage is null, the message is a first message.
             'passage_id' => null,
-            'conversation_id'=> $conversation->id,
+
         ]);
 
 

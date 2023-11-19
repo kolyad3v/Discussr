@@ -9,8 +9,10 @@ import { PassageType } from '@/types'
 import GenericModal from '../GenericModal'
 import NewMessageForm from './NewMessageForm'
 import zIndex from '@mui/material/styles/zIndex'
+import { cache } from '@babel/traverse'
 
 type MessageDisplayBoxProps = {
+	handlePassageClick: (passageId: number) => void
 	children: React.ReactNode
 	createdAt: string
 	passages: PassageType[]
@@ -18,7 +20,7 @@ type MessageDisplayBoxProps = {
 	messageId: number
 }
 
-const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, passages, conversationId, messageId }) => {
+const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, passages, conversationId, messageId, handlePassageClick }) => {
 	const getTitleSnippetFromChildren = useCallback(() => {
 		if (children && typeof children === 'string') {
 			const match = children.match(/^(\S+\s){0,4}\S+/)
@@ -57,6 +59,9 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 					variant={hoveredIndex === index ? 'soft' : 'plain'}
 					onMouseEnter={() => handleMouseEnter(index)}
 					onMouseLeave={handleMouseLeave}
+					onClick={() => {
+						handlePassageClick(passage.id)
+					}}
 					sx={{ cursor: 'pointer', transition: 'all 0.2s ease-in-out' }}
 					color='danger'>
 					{highlightedSegment}
@@ -94,7 +99,6 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		}
 	}, [])
 
-	console.log(passageInfo)
 	useEffect(() => {
 		const handleDocumentClick = (event) => {
 			// Check if the click is outside the context menu

@@ -7,6 +7,7 @@ import MessageDisplayBox from './MessageDisplayBox'
 import { PassageType } from '@/types/interfaces.js'
 
 type MessageProps = {
+	handlePassageClick: (passageId: number) => void
 	position: [number, number, 0]
 	message: string | null
 	createdAt: string
@@ -14,7 +15,7 @@ type MessageProps = {
 	messageId: number
 	conversationId: number
 }
-const Message: FC<MessageProps> = ({ position, message, createdAt, passages, messageId, conversationId }) => {
+const Message: FC<MessageProps> = ({ position, message, createdAt, passages, messageId, conversationId, handlePassageClick }) => {
 	const dateForHumans = new Date(createdAt).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 
 	return (
@@ -24,6 +25,7 @@ const Message: FC<MessageProps> = ({ position, message, createdAt, passages, mes
 					transform
 					position={[-4, 0, 0]}>
 					<MessageDisplayBox
+						handlePassageClick={handlePassageClick}
 						conversationId={conversationId}
 						passages={passages}
 						createdAt={dateForHumans}

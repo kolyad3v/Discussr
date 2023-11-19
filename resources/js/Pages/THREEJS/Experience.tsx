@@ -1,16 +1,47 @@
-import { FC, createRef, memo, useCallback, useEffect, useState } from 'react'
-import { useThree } from '@react-three/fiber'
+import { FC, createRef, memo, useCallback, useEffect, useRef, useState } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
 import { Html, Text, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
 import Message from './Message'
 
 import NewFirstMessageButton from './NewFirstMessageButton.js'
-import { PassageNodes, Node } from './PassageNodes.jsx'
+import * as THREE from 'three'
+// import { PassageNodes, Node } from './PassageNodes.jsx'
 
 const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
+	const { camera } = useThree()
+	const controlsRef = useRef<any>()
+	const [moving, setMoving] = useState(false)
+
+	const [targetPosition, setTargetPosition] = useState<[number, number, number]>()
+
+	let messagePassageIdToPositionMap = new Map<number | null, [number, number, number]>()
+
+	const handlePassageClick = useCallback(
+		(passageId: number | null) => {
+			if (passageId === null) return
+			const targetPos = messagePassageIdToPositionMap.get(passageId)
+			if (targetPos) {
+				console.log('clicked')
+				setTargetPosition(targetPos)
+				controlsRef.current.target.set(targetPos[0], targetPos[1], targetPos[2])
+				setMoving(true)
+			}
+		},
+		[messagePassageIdToPositionMap]
+	)
+
+	useFrame(() => {
+		if (moving) {
+			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], 40), 0.3)
+			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], 40)) < 0.1) {
+				setMoving(false)
+			}
+		}
+		return null
+	})
+
 	const gapY = 25 // Vertical spacing between messages
-	let gapYIncrement = 0.01
-	let messagePassageIdToPositionMap = new Map<number | null, [number, number, 0]>()
 
 	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
 		let yPosition = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
@@ -19,6 +50,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		messagePassageIdToPositionMap.set(message.passage_id, messagePosition)
 		let finalArray = [
 			<Message
+				handlePassageClick={handlePassageClick}
 				position={[depth * 20, yPosition, 0]}
 				message={message.message}
 				createdAt={message.created_at}
@@ -50,22 +82,21 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		let firstMessage = activeMessages.find((message) => message.passage_id === null)
 		return firstMessage ? exploreBranch(firstMessage, 0) : null
 	}
-
+	console.log(messagePassageIdToPositionMap)
 	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
 	// const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
-	console.log(messagePassageIdToPositionMap)
 
 	return (
 		<>
 			<OrbitControls
 				enableRotate={false}
 				enableZoom={true}
+				ref={controlsRef}
 			/>
 			<ambientLight intensity={0.5} />
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
-
 			{/*
 			{nodes.length > 0 && (
 				<PassageNodes>

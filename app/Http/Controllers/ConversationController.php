@@ -170,7 +170,7 @@ class ConversationController extends Controller
             'messageId'=> 'nullable|numeric',
         ]);
 
-        $passage = null; // Initialize $passage variable outside the if block
+
 
         if($validated['messageId']!== null){
             // create a new passage and get that passage's Id

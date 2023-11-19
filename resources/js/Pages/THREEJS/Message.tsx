@@ -24,8 +24,6 @@ const Message: FC<MessageProps> = ({ position, message, createdAt, passages, mes
 		<>
 			<mesh position={position}>
 				<Html
-					// To add back so that adding a new conversation is beautiful
-					// style={{ filter: 'blur(10px)' }}
 					transform
 					position={[-4, 0, 0]}>
 					<MessageDisplayBox
@@ -36,21 +34,6 @@ const Message: FC<MessageProps> = ({ position, message, createdAt, passages, mes
 						{message}
 					</MessageDisplayBox>
 				</Html>
-				{/* {nodes.length > 0 && (
-					<PassageNodes>
-						{nodes.map((node, index) => (
-							<Node
-								key={index}
-								ref={node.ref}
-								message={node.message}
-								color={node.color}
-								position={node.position}
-								connectedTo={node.connectedTo}
-								isPassageNode={node.isPassageNode}
-							/>
-						))}
-					</PassageNodes>
-				)} */}
 			</mesh>
 		</>
 	)

@@ -35,11 +35,21 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 		}
 	}
 
+	// write a function to find the first conversationId
+	const updateConversationActive = () => {
+		if (activeConversationId !== 0) {
+			setConversationActive(activeConversationId)
+		} else if (conversations.length > 0) {
+			setConversationActive(conversations[0].id)
+		}
+	}
+
 	useEffect(() => {
 		setConversations(enhanceConversationsWithActiveState(conversationsData))
+		updateConversationActive()
 	}, [conversationsData])
 
-	console.log(activeMessages)
+	console.log(activeMessages, 'active messages')
 
 	return (
 		<AuthenticatedLayout user={auth.user}>

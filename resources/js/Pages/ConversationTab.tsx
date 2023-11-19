@@ -51,7 +51,7 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 
 								<IconButton
 									color='danger'
-									style={{ cursor: 'pointer', position: 'absolute', top: 0, right: -58, transition: '0.2s ease-in-out' }}
+									style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0, transition: '0.2s ease-in-out' }}
 									size='xs'>
 									<Clear
 										onClick={handleDelete}

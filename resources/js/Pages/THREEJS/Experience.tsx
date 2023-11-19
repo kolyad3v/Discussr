@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react'
+import { FC, createRef, memo, useCallback, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Html, Text, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
@@ -69,6 +69,9 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		return firstMessage ? explorBranch(firstMessage, 0) : null
 	}
 
+	const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
+	const [nodes, setNodes] = useState<{ message: string; ref: any; color: string; position: number[]; connectedTo: any[]; isPassageNode: boolean }[]>([])
+
 	return (
 		<>
 			<OrbitControls
@@ -79,6 +82,22 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
+
+			{/* {nodes.length > 0 && (
+					<PassageNodes>
+						{nodes.map((node, index) => (
+							<Node
+								key={index}
+								ref={node.ref}
+								message={node.message}
+								color={node.color}
+								position={node.position}
+								connectedTo={node.connectedTo}
+								isPassageNode={node.isPassageNode}
+							/>
+						))}
+					</PassageNodes>
+				)} */}
 		</>
 	)
 })

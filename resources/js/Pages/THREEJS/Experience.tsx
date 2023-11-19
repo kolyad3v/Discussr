@@ -10,8 +10,13 @@ import { PassageNodes, Node } from './PassageNodes.jsx'
 const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
 	const gapY = 25 // Vertical spacing between messages
 	let gapYIncrement = 0.01
-	const explorBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
+	let messagePassageIdToPositionMap = new Map<number | null, [number, number, 0]>()
+
+	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
 		let yPosition = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
+
+		const messagePosition: [number, number, 0] = [depth * 20, yPosition, 0]
+		messagePassageIdToPositionMap.set(message.passage_id, messagePosition)
 		let finalArray = [
 			<Message
 				position={[depth * 20, yPosition, 0]}
@@ -27,7 +32,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 		childMessages.forEach((childMessage, index: number) => {
 			if (childMessage) {
-				let branch = explorBranch(childMessage, depth + 1, index)
+				let branch = exploreBranch(childMessage, depth + 1, index)
 				if (branch) {
 					finalArray = [...finalArray, ...branch]
 				}
@@ -43,11 +48,12 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	const renderMessages = () => {
 		let firstMessage = activeMessages.find((message) => message.passage_id === null)
-		return firstMessage ? explorBranch(firstMessage, 0) : null
+		return firstMessage ? exploreBranch(firstMessage, 0) : null
 	}
 
 	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
 	// const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
+	console.log(messagePassageIdToPositionMap)
 
 	return (
 		<>

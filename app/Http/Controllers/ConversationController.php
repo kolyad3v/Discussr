@@ -12,7 +12,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Cache;
 use App\Mail\NewConversationMail;
 use Illuminate\Support\Facades\Mail;
-
+use Mockery\Undefined;
 
 class ConversationController extends Controller
 {
@@ -190,18 +190,48 @@ class ConversationController extends Controller
             'user_to_id'=> $conversation->user_one_id === Auth::id() ? $conversation->user_two_id : $conversation->user_one_id,
             'message' => $validated['message'],
             // If passage is null, the message is a first message.
-            'passage_id' => $passage? $passage->id : null,
+            'passage_id' => $passage ? $passage->id : null,
             'conversation_id'=> $conversation->id,
         ]);
 
-        // $message = Message::create([
-        //     'user_from_id' => Auth::id(),
-        //     'user_to_id'=> $conversation->user_one_id === Auth::id() ? $conversation->user_two_id : $conversation->user_one_id,
-        //     'message' => $validated['message'],
-        //     'passage_origin_id'=>  $request->passage_origin_id ? $request->passage_origin_id : null,
-        //     'conversation_id'=> $conversation->id,
 
-        // ]);
+        $conversations = Auth::user()->conversations;
+        $conversations = Auth::user()->conversations()->with([
+            'messages' => function ($query) {
+                $query->with('passages');
+            },
+            'userOne' => function ($query) {
+                $query->with('avatar');
+            },
+            'userTwo' => function ($query) {
+                $query->with('avatar');
+            }
+        ])->get();
+
+        return Inertia::render('Dashboard', [
+            'conversationsData' => $conversations,
+            'auth' => [
+                'user' => Auth::user()
+            ],
+        ]);
+    }
+
+    public function storeFirstMessage(Request $request, Conversation $conversation)
+    {
+        $validated = $request->validate([
+            'message' => 'required|string',
+            'messageId'=> 'nullable',
+        ]);
+
+
+        $conversation->messages()->create([
+            'user_from_id' => Auth::id(),
+            'user_to_id'=> $conversation->user_one_id === Auth::id() ? $conversation->user_two_id : $conversation->user_one_id,
+            'message' => $validated['message'],
+            // If passage is null, the message is a first message.
+            'passage_id' => null,
+            'conversation_id'=> $conversation->id,
+        ]);
 
 
         $conversations = Auth::user()->conversations;

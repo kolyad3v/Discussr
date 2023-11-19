@@ -48,18 +48,17 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 
 								<Typography sx={{ mb: 0.5 }}>{label}</Typography>
 								<Typography level='body-sm'>Conversation snippet</Typography>
-
-								<IconButton
-									color='danger'
-									style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0, transition: '0.2s ease-in-out' }}
-									size='xs'>
-									<Clear
-										onClick={handleDelete}
-										fontSize='small'
-										sx={{ fontSize: '16px' }}
-									/>
-								</IconButton>
 							</div>
+							<IconButton
+								color='danger'
+								style={{ cursor: 'pointer', float: 'right', transition: '0.2s ease-in-out', height: 'fit-content' }}
+								size='xs'>
+								<Clear
+									onClick={handleDelete}
+									fontSize='small'
+									sx={{ fontSize: '16px' }}
+								/>
+							</IconButton>
 						</Box>
 					</ListItemContent>
 				</ListItemButton>

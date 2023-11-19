@@ -23,7 +23,7 @@ const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversa
 	const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
+		form.post(route('api.conversations.firstMessage.store', { conversation: activeConversationId }), {
 			preserveState: true,
 			onSuccess: () => {
 				setOpen(false)

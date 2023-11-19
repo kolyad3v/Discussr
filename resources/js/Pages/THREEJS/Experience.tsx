@@ -32,7 +32,6 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			if (passageId === null) return
 			const targetPos = messagePassageIdToPositionMap.get(passageId)
 			if (targetPos) {
-				console.log('clicked')
 				setTargetPosition(targetPos)
 				startMovingToTarget(targetPos)
 				setMoving(true)
@@ -104,7 +103,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		let firstMessage = activeMessages.find((message) => message.passage_id === null)
 		return firstMessage ? exploreBranch(firstMessage, 0) : null
 	}
-	console.log(messagePassageIdToPositionMap)
+
 	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
 	// const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
 

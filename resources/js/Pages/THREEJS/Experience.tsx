@@ -1,4 +1,4 @@
-import { FC, createRef, memo, useCallback, useState } from 'react'
+import { FC, createRef, memo, useCallback, useEffect, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Html, Text, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
@@ -8,30 +8,10 @@ import NewFirstMessageButton from './NewFirstMessageButton.js'
 import { PassageNodes, Node } from './PassageNodes.jsx'
 
 const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: number }> = memo(({ activeMessages, activeConversationId }) => {
-	// const { raycaster, scene, pointer, viewport } = useThree()
-
-	// const createPassage = useCallback(() => {
-	// 	console.log('Clicked')
-	// 	console.log(scene)
-	// 	console.log(raycaster.intersectObjects(scene.children, true))
-	// 	console.log(pointer)
-	// 	console.log(viewport)
-	// 	let newNode = {
-	// 		name: '',
-	// 		ref: createRef(),
-	// 		color: '#000000',
-	// 		position: [pointer.x + (viewport.width / viewport.height) * 3, pointer.y * viewport.height - viewport.width / viewport.height, 0],
-	// 	}
-	// 	if (confirm('create new message?')) {
-	// 		setNodes((prev) => [...prev, newNode])
-	// 	}
-	// }, [scene, raycaster])
-
 	const gapY = 25 // Vertical spacing between messages
 	let gapYIncrement = 0.01
 	const explorBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
 		let yPosition = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
-
 		let finalArray = [
 			<Message
 				position={[depth * 20, yPosition, 0]}
@@ -79,6 +59,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
+
 			{/*
 			{nodes.length > 0 && (
 				<PassageNodes>

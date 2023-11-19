@@ -28,6 +28,16 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 	console.log('message passages!', passages)
 	const titleSnippet = getTitleSnippetFromChildren()
 
+	const [hover, setHover] = useState(false)
+	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+	const handleMouseEnter = (index: number) => {
+		setHoveredIndex(index)
+	}
+
+	const handleMouseLeave = () => {
+		setHoveredIndex(null)
+	}
+
 	const highlightedText = useMemo(() => {
 		if (typeof children !== 'string') {
 			return children
@@ -42,9 +52,13 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 			return [
 				startSegment,
 				<Typography
+					key={index}
 					level='body-md'
-					variant='soft'
-					color='success'>
+					variant={hoveredIndex === index ? 'soft' : 'plain'}
+					onMouseEnter={() => handleMouseEnter(index)}
+					onMouseLeave={handleMouseLeave}
+					sx={{ cursor: 'pointer', transition: 'all 0.2s ease-in-out' }}
+					color='danger'>
 					{highlightedSegment}
 				</Typography>,
 			]
@@ -53,7 +67,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		segments.push(children.slice(lastIndex))
 
 		return segments
-	}, [children, passages])
+	}, [children, passages, hoveredIndex])
 
 	const [open, setOpen] = useState<boolean>(false)
 

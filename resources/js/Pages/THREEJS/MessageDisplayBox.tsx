@@ -89,6 +89,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 			const length = selection!.toString().length
 
 			setPassageInfo({ start, length })
+
 			setContextMenu({
 				visible: true,
 				x: event.clientX,
@@ -99,7 +100,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 			})
 		}
 	}, [])
-
+	console.log(passageInfo)
 	useEffect(() => {
 		const handleDocumentClick = (event) => {
 			// Check if the click is outside the context menu

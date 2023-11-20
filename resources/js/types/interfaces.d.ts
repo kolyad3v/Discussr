@@ -23,8 +23,17 @@ export interface IConversation {
 	user_one_id: number
 	user_two_id: number
 	label: string
-	user_one: {}
-	user_two: {}
+	user_one: {
+		avatar: {
+			url: string
+		}
+	}
+	user_two: {
+		avatar: {
+			url: string
+		}
+	}
+
 	active: boolean
 }
 
@@ -35,6 +44,7 @@ export interface IConversationTab {
 
 	active: boolean
 	setConversationActive: (id: number) => void
+	avatarUrl: string | null
 }
 
 export type PassageType = {

@@ -170,6 +170,7 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 						'--ListItem-radius': (theme) => theme.vars.radius.sm,
 					}}>
 					<ConversationTabs
+						userId={user.id}
 						conversations={searchInput ? filteredConversations : conversations}
 						setConversationActive={setConversationActive}
 					/>

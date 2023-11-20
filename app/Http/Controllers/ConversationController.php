@@ -34,6 +34,8 @@ class ConversationController extends Controller
             return $conversations;
         });
 
+        Auth::user()->load('avatar');
+
         return Inertia::render('Dashboard', [
             'conversationsData' => $conversations,
         ]);

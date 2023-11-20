@@ -1,4 +1,4 @@
-import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction, ChangeEvent } from 'react'
+import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction, ChangeEvent, useEffect } from 'react'
 import GlobalStyles from '@mui/joy/GlobalStyles'
 import Avatar from '@mui/joy/Avatar'
 import Box from '@mui/joy/Box'
@@ -61,6 +61,8 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 		setSearchInput(e.target.value)
 	}
 
+	console.log(user, conversations)
+
 	return (
 		<Sheet
 			className='Sidebar'
@@ -116,10 +118,20 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 				onClick={() => closeSidebar()}
 			/>
 			<Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-				<Avatar
-					variant='outlined'
-					size='lg'
-				/>
+				{user.avatar ? (
+					<Avatar
+						variant='outlined'
+						size='lg'
+						src={user.avatar.url}
+					/>
+				) : (
+					<Avatar
+						variant='outlined'
+						size='lg'>
+						{user.name.charAt(0) ? user.name.charAt(0) : 'D'}
+					</Avatar>
+				)}
+
 				<Box sx={{ minWidth: 0, flex: 1 }}>
 					<Typography level='title-md'>Welcome back, {user.name}</Typography>
 					<Typography level='body-sm'>Signed in as {user.username}</Typography>

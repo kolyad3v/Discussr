@@ -19,7 +19,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	const [targetPosition, setTargetPosition] = useState<[number, number, number]>()
 
-	const startMovingToTarget = (newTargetPos) => {
+	const startMovingToTarget = (newTargetPos: [number, number, number]) => {
 		setStartTargetPos(controlsRef.current.target.clone())
 		setEndTargetPos(new THREE.Vector3(newTargetPos[0], newTargetPos[1], newTargetPos[2]))
 		setMoving(true)
@@ -43,13 +43,13 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	useFrame(() => {
 		if (moving) {
 			// Interpolate camera position
-			camera.position.lerp(new THREE.Vector3(targetPosition[0], targetPosition[1], fixedCameraZPosition), 0.1)
+			camera.position.lerp(new THREE.Vector3(targetPosition![0], targetPosition![1], fixedCameraZPosition), 0.1)
 
 			// Interpolate controls target
 			controlsRef.current.target.lerp(endTargetPos, 0.05)
 			controlsRef.current.update()
 
-			if (camera.position.distanceTo(new THREE.Vector3(targetPosition[0], targetPosition[1], fixedCameraZPosition)) < 0.5 && controlsRef.current.target.distanceTo(endTargetPos) < 0.5) {
+			if (camera.position.distanceTo(new THREE.Vector3(targetPosition![0], targetPosition![1], fixedCameraZPosition)) < 0.5 && controlsRef.current.target.distanceTo(endTargetPos) < 0.5) {
 				setMoving(false)
 			}
 		}

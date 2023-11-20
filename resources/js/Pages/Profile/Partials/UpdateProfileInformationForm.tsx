@@ -14,7 +14,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 		email: user.email,
 	})
 
-	debugger
 	const [avatarUrl, setAvatarUrl] = useState<string>(avatar ? avatar.url : '')
 
 	const submit: FormEventHandler = (e) => {
@@ -27,7 +26,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 	const [savingImage, setSavingImage] = useState(false)
 
 	const onImageSaved = (res: AxiosResponse) => {
-		debugger
 		setAvatarUrl(res.data.url)
 		setSavingImage(false)
 		if (fileInputRef.current) {

@@ -27,9 +27,9 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		}
 	}, [children])
 
+	console.log(passages, 'passages')
 	const titleSnippet = getTitleSnippetFromChildren()
 
-	const [hover, setHover] = useState(false)
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 	const handleMouseEnter = (index: number) => {
 		setHoveredIndex(index)
@@ -83,7 +83,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		event.preventDefault()
 		const selection = window.getSelection()
 		if (selection!.toString().trim() !== '') {
-			const start = selection!.anchorOffset // Assuming this is the correct logic for your use case
+			const start = selection!.focusOffset
 			const length = selection!.toString().length
 
 			setPassageInfo({ start, length })
@@ -92,19 +92,16 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				visible: true,
 				x: event.clientX,
 				y: event.clientY,
-				// selection: selection.toString(),
-				// start: selection.anchorOffset,
-				// length: selection.toString().length,
 			})
 		}
 	}, [])
-	console.log(passageInfo)
+
+	console.log(passageInfo, 'message display box')
 	useEffect(() => {
 		const handleDocumentClick = (event) => {
 			// Check if the click is outside the context menu
 			if (contextMenu.visible && !textRef.current.contains(event.target)) {
 				setContextMenu({ visible: false, x: 0, y: 0 })
-				// Don't reset passageInfo here
 			}
 		}
 
@@ -147,7 +144,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				height={640}
 				open={open}
 				setOpen={setOpen}>
-				{passageInfo && (
+				{passageInfo && open && (
 					<NewMessageForm
 						activeConversationId={conversationId}
 						messageId={messageId}
@@ -157,7 +154,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				)}
 			</GenericModal>
 			{contextMenu.visible && (
-				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: contextMenu.x - 700 }}>
+				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: Math.abs(contextMenu.x - 100) }}>
 					{/* <IconButton
 						aria-label='new message'
 						variant='soft'
@@ -170,7 +167,10 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 						aria-label='new messages'
 						variant='soft'
 						color='success'
-						onClick={() => setOpen(true)}
+						onClick={() => {
+							setOpen(true)
+							console.log(passageInfo)
+						}}
 						sx={{
 							'--IconButton-size': '64px',
 							transition: 'all 0.2s ease-in-out',

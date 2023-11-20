@@ -70,6 +70,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		messagePassageIdToPositionMap.set(message.passage_id, messagePosition)
 		let finalArray = [
 			<Message
+				key={message.id}
 				user={user.id === message.user_from_id ? user.username : 'From other person'}
 				handlePassageClick={handlePassageClick}
 				position={[depth * 20, yPosition, 0]}

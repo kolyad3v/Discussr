@@ -7,7 +7,7 @@ import IconButton from '@mui/joy/IconButton'
 import FormatBold from '@mui/icons-material/FormatBold'
 import FormatItalic from '@mui/icons-material/FormatItalic'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useForm } from '@inertiajs/react'
 
 const NewMessageForm = ({
@@ -31,7 +31,7 @@ const NewMessageForm = ({
 		passageStart: passageInfo!.start,
 		passageLength: passageInfo!.length,
 	})
-	console.log(form)
+	console.log(form, 'form ')
 	const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
@@ -50,7 +50,7 @@ const NewMessageForm = ({
 	return (
 		<form
 			onSubmit={submitMessage}
-			style={{ height: '100%' }}>
+			style={{ height: '100%', overflowY: 'scroll' }}>
 			<FormControl
 				sx={{
 					width: 'auto',

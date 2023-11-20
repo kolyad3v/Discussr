@@ -22,26 +22,21 @@ class ConversationController extends Controller
     public function index()
     {
 
-    $conversations = Cache::remember('conversations.' . Auth::id(), 60, function () {
-        $conversations = Auth::user()->conversations;
-        $conversations->load([
-            'messages' => function ($query) {
-                $query->with('passages');
-            },
-            'userOne' => function ($query) {
-                $query->with('avatar');
-            },
-            'userTwo' => function ($query) {
-                $query->with('avatar');
-            }
+        $conversations = Cache::remember('conversations.' . Auth::id(), 60, function () {
+            $conversations = Auth::user()->conversations;
+
+            $conversations->load([
+                'messages.passages',
+                'userOne.avatar',
+                'userTwo.avatar'
+            ]);
+
+            return $conversations;
+        });
+
+        return Inertia::render('Dashboard', [
+            'conversationsData' => $conversations,
         ]);
-
-        return $conversations;
-    });
-
-    return Inertia::render('Dashboard', [
-        'conversationsData' => $conversations,
-    ]);
     }
 
     /**
@@ -84,6 +79,12 @@ class ConversationController extends Controller
         Mail::to($user->email)->send(new NewConversationMail($newConversation, $user));
 
         $conversations = Auth::user()->conversations;
+
+        // $conversations = Auth::user()->conversations()->with([
+        //     'messages.passages',
+        //     'userOne.avatar'
+        // ])
+
         $conversations = Auth::user()->conversations()->with([
             'messages' => function ($query) {
                 $query->with('passages');

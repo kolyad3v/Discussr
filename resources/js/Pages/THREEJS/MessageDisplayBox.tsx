@@ -2,14 +2,12 @@ import Card from '@mui/joy/Card'
 import CardContent from '@mui/joy/CardContent'
 import IconButton from '@mui/joy/IconButton'
 import Typography from '@mui/joy/Typography'
-import { Share } from '@mui/icons-material'
+import { Reply, Share } from '@mui/icons-material'
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PassageType } from '@/types'
 
 import GenericModal from '../GenericModal'
 import NewMessageForm from './NewMessageForm'
-import zIndex from '@mui/material/styles/zIndex'
-import { cache } from '@babel/traverse'
 
 type MessageDisplayBoxProps = {
 	handlePassageClick: (passageId: number) => void
@@ -159,14 +157,26 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				)}
 			</GenericModal>
 			{contextMenu.visible && (
-				<div style={{ position: 'absolute', top: contextMenu.y, left: contextMenu.x - 500 }}>
-					<IconButton
+				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: contextMenu.x - 700 }}>
+					{/* <IconButton
 						aria-label='new message'
 						variant='soft'
 						color='danger'
 						sx={{ transition: 'all 0.2s ease-in-out', height: '10rem', width: '10rem', zIndex: 1000 }}
 						onClick={() => setOpen(true)}>
 						New Message
+					</IconButton> */}
+					<IconButton
+						aria-label='new messages'
+						variant='soft'
+						color='success'
+						onClick={() => setOpen(true)}
+						sx={{
+							'--IconButton-size': '64px',
+							transition: 'all 0.2s ease-in-out',
+							zIndex: 1000,
+						}}>
+						<Reply />
 					</IconButton>
 				</div>
 			)}

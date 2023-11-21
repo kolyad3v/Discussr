@@ -4,7 +4,7 @@ import { IConversationTab } from '@/types'
 import { useForm } from '@inertiajs/react'
 import { Clear } from '@mui/icons-material'
 
-const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversationActive, avatarUrl, username }) => {
+const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversationActive, avatarUrl, username, messageSnippet }) => {
 	const style = {
 		backgroundColor: active ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
 		transition: ' 0.2s ease-in-out',
@@ -54,10 +54,23 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 									sx={{
 										mb: 0.5,
 									}}>
-									<Typography level='body-xs'>{username}</Typography>
+									<Typography
+										level='body-md'
+										sx={{ fontWeight: 'bold' }}>
+										{username}
+									</Typography>
 								</Box>
 
-								<Typography sx={{ mb: 0.5 }}>{label}</Typography>
+								<Typography
+									level='body-md'
+									sx={{ mb: 0.5 }}>
+									{label}
+								</Typography>
+								<Typography
+									level='body-sm'
+									sx={{ mb: 0.5 }}>
+									{messageSnippet}
+								</Typography>
 							</div>
 							<IconButton
 								color='danger'

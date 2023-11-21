@@ -61,7 +61,7 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 		setSearchInput(e.target.value)
 	}
 
-	console.log(user, conversations)
+	// console.log(user, conversations)
 
 	return (
 		<Sheet

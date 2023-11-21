@@ -62,7 +62,7 @@ export default function Register() {
 
 					<TextInput
 						id='username'
-						type='username'
+						type='text'
 						name='username'
 						value={data.username}
 						className='mt-1 block w-full'
@@ -72,7 +72,7 @@ export default function Register() {
 					/>
 
 					<InputError
-						message={errors.email}
+						message={errors.username}
 						className='mt-2'
 					/>
 				</div>

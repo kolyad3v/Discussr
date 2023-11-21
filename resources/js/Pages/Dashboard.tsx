@@ -48,9 +48,9 @@ export default function Dashboard({ auth, conversationsData }: PageProps) {
 		updateConversationActive()
 	}, [conversationsData])
 
-	console.log(conversationsData)
+	console.log(conversationsData, 'Raw convo data from BE')
 	console.log(activeMessages, 'active messages')
-	console.log(auth.user)
+	// console.log(auth.user)
 	return (
 		<AuthenticatedLayout user={auth.user}>
 			<CssVarsProvider>

@@ -27,7 +27,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		}
 	}, [children])
 
-	console.log(passages, 'passages')
+	console.log(passages, `passages passed in to message display box for message id:${messageId}}`)
 	const titleSnippet = getTitleSnippetFromChildren()
 
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -39,6 +39,40 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		setHoveredIndex(null)
 	}
 
+	// const highlightedText = useMemo(() => {
+	// 	if (typeof children !== 'string') {
+	// 		return children
+	// 	}
+
+	// 	let lastIndex = 0
+	// 	const sortedPassages = [...passages].sort((a, b) => a.start - b.start)
+	// 	const segments = sortedPassages.flatMap((passage, index) => {
+	// 		const startSegment = children.slice(lastIndex, passage.start)
+	// 		const highlightedSegment = children.slice(passage.start, passage.start + passage.length)
+	// 		lastIndex = passage.start + passage.length
+	// 		return [
+	// 			startSegment,
+	// 			<Typography
+	// 				key={index}
+	// 				level='body-md'
+	// 				variant={hoveredIndex === index ? 'soft' : 'plain'}
+	// 				onMouseEnter={() => handleMouseEnter(index)}
+	// 				onMouseLeave={handleMouseLeave}
+	// 				onClick={() => {
+	// 					handlePassageClick(passage.id)
+	// 				}}
+	// 				sx={{ cursor: 'pointer', transition: 'all 0.2s ease-in-out' }}
+	// 				color='danger'>
+	// 				{highlightedSegment}
+	// 			</Typography>,
+	// 		]
+	// 	})
+
+	// 	segments.push(children.slice(lastIndex))
+
+	// 	return segments
+	// }, [children, passages, hoveredIndex])
+
 	const highlightedText = useMemo(() => {
 		if (typeof children !== 'string') {
 			return children
@@ -46,29 +80,43 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 
 		let lastIndex = 0
 		const sortedPassages = [...passages].sort((a, b) => a.start - b.start)
-		const segments = sortedPassages.flatMap((passage, index) => {
-			const startSegment = children.slice(lastIndex, passage.start)
+		const segments = []
+
+		sortedPassages.forEach((passage, index) => {
+			// Text before the highlighted segment
+			if (passage.start > lastIndex) {
+				segments.push(
+					<Typography
+						key={index * Math.random()}
+						level='body-md'>
+						{children.slice(lastIndex, passage.start)}
+					</Typography>
+				)
+			}
+
+			// The highlighted segment
 			const highlightedSegment = children.slice(passage.start, passage.start + passage.length)
-			lastIndex = passage.start + passage.length
-			return [
-				startSegment,
+			segments.push(
 				<Typography
 					key={index}
 					level='body-md'
 					variant={hoveredIndex === index ? 'soft' : 'plain'}
 					onMouseEnter={() => handleMouseEnter(index)}
 					onMouseLeave={handleMouseLeave}
-					onClick={() => {
-						handlePassageClick(passage.id)
-					}}
+					onClick={() => handlePassageClick(passage.id)}
 					sx={{ cursor: 'pointer', transition: 'all 0.2s ease-in-out' }}
 					color='danger'>
 					{highlightedSegment}
-				</Typography>,
-			]
+				</Typography>
+			)
+
+			lastIndex = passage.start + passage.length
 		})
 
-		segments.push(children.slice(lastIndex))
+		// Add any remaining text after the last passage
+		if (lastIndex < children.length) {
+			segments.push(children.slice(lastIndex))
+		}
 
 		return segments
 	}, [children, passages, hoveredIndex])
@@ -78,21 +126,50 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 
 	const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0 })
 	const textRef = useRef(!null)
+	const bodyText = useRef(!null)
+
+	// const handleContextMenu = useCallback((event: any) => {
+	// 	event.preventDefault()
+	// 	const selection = window.getSelection()
+	// 	if (selection!.toString().trim() !== '') {
+	// 		const start = selection!.anchorOffset
+	// 		const length = selection!.toString().length
+
+	// 		setPassageInfo({ start, length })
+
+	// 		setContextMenu({
+	// 			visible: true,
+	// 			x: event.clientX,
+	// 			y: event.clientY,
+	// 		})
+	// 	}
+	// }, [])
 
 	const handleContextMenu = useCallback((event: any) => {
 		event.preventDefault()
 		const selection = window.getSelection()
-		if (selection!.toString().trim() !== '') {
-			const start = selection!.focusOffset
-			const length = selection!.toString().length
 
-			setPassageInfo({ start, length })
+		if (selection && selection.rangeCount > 0) {
+			const range = selection.getRangeAt(0)
+			const container = bodyText.current // Reference to your text container
 
-			setContextMenu({
-				visible: true,
-				x: event.clientX,
-				y: event.clientY,
-			})
+			if (container && selection.toString().trim() !== '') {
+				const combinedText = container.innerText
+				const selectedText = selection.toString()
+
+				// Find the actual start position in the combined text
+				const start = combinedText.indexOf(selectedText)
+				const length = selectedText.length
+
+				if (start !== -1) {
+					setPassageInfo({ start, length })
+					setContextMenu({
+						visible: true,
+						x: event.clientX,
+						y: event.clientY,
+					})
+				}
+			}
 		}
 	}, [])
 
@@ -136,7 +213,11 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				</div>
 
 				<CardContent orientation='horizontal'>
-					<Typography level='body-md'>{highlightedText}</Typography>
+					<Typography
+						ref={bodyText}
+						level='body-md'>
+						{highlightedText}
+					</Typography>
 				</CardContent>
 			</Card>
 			<GenericModal

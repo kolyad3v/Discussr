@@ -6,7 +6,7 @@ import { AspectRatio, Avatar, Box, Button, Card, CardActions, CardOverflow, Form
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import axios, { AxiosResponse } from 'axios'
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '', avatar_url = '' }: { mustVerifyEmail: boolean; status?: string; className?: string; avatar_url?: string }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '', avatar = null }: { mustVerifyEmail: boolean; status?: string; className?: string; avatar?: any }) {
 	const user = usePage<PageProps>().props.auth.user
 
 	const { data, setData, patch, errors, processing } = useForm({
@@ -14,7 +14,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 		email: user.email,
 	})
 
-	const [avatar, setAvatar] = useState<string>('')
+	const [avatarUrl, setAvatarUrl] = useState<string>(avatar ? avatar.url : '')
 
 	const submit: FormEventHandler = (e) => {
 		e.preventDefault()
@@ -26,7 +26,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 	const [savingImage, setSavingImage] = useState(false)
 
 	const onImageSaved = (res: AxiosResponse) => {
-		setAvatar(res.data.url)
+		setAvatarUrl(res.data.url)
 		setSavingImage(false)
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
@@ -52,10 +52,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 	const handleProfileImageClick = () => {
 		fileInputRef.current?.click()
 	}
-
-	useEffect(() => {
-		setAvatar(avatar_url)
-	}, [])
 
 	return (
 		<section className={className}>
@@ -87,7 +83,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 									ratio='1'
 									maxHeight={200}
 									sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}>
-									{avatar ? <Avatar src={avatar} /> : <Avatar>{user.name[0]}</Avatar>}
+									{avatar ? <Avatar src={avatarUrl} /> : <Avatar>{user.name[0]}</Avatar>}
 								</AspectRatio>
 								<IconButton
 									aria-label='upload new picture'

@@ -9,7 +9,7 @@ import { Head } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import { Breadcrumbs, Stack, Typography, Link } from '@mui/joy'
 
-export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+export default function Edit({ auth, mustVerifyEmail, status, avatar }: PageProps<{ mustVerifyEmail: boolean; status?: string; avatar: any }>) {
 	return (
 		<AuthenticatedLayout user={auth.user}>
 			<Stack
@@ -49,6 +49,7 @@ export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ must
 				<UpdateProfileInformationForm
 					mustVerifyEmail={mustVerifyEmail}
 					status={status}
+					avatar={avatar}
 					className='max-w-xl'
 				/>
 

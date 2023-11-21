@@ -73,7 +73,7 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 							justifySelf: 'end',
 							transition: 'all 0.2s ease-in-out',
 						}}>
-						Create New Conversation
+						{processing ? 'Creating...' : 'Create New Conversation'}
 					</Button>
 				</Stack>
 			</Stack>

@@ -26,7 +26,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 	const [savingImage, setSavingImage] = useState(false)
 
 	const onImageSaved = (res: AxiosResponse) => {
-		setAvatarUrl(res.data.url)
+		setAvatarUrl(res.data)
+
 		setSavingImage(false)
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
@@ -44,7 +45,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 				.then(onImageSaved)
 				.catch((err) => {
 					setSavingImage(false)
-					alert("Couldn't upload the image")
+					alert('Error saving image')
 				})
 		}
 	}, [])

@@ -76,9 +76,17 @@ class ProfileController extends Controller
         $path = $request->file('avatar')->store('avatars');
         $url = Storage::url($path);
 
+        // Check if the user already has an avatar
+        if ($user->avatar) {
+            // Update existing avatar
+            $user->avatar->update(['url' => $url]);
+        } else {
+            // Create a new avatar
+            $user->avatar()->create(['url' => $url]);
+        }
 
-        return $user->avatar()->create(compact('url'));
-
-
+        // Return the avatar URL
+        return $url;
     }
+
 }

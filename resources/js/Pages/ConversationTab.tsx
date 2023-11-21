@@ -32,7 +32,20 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 					color='primary'
 					sx={style}
 					onClick={() => setConversationActive(id)}>
-					<ListItemDecorator>{avatarUrl ? <Avatar src={avatarUrl} /> : <Avatar>{label[0]}</Avatar>}</ListItemDecorator>
+					<ListItemDecorator>
+						{avatarUrl ? (
+							<Avatar
+								src={avatarUrl}
+								size='lg'
+							/>
+						) : (
+							<Avatar
+								variant='soft'
+								size='lg'>
+								{label[0]}
+							</Avatar>
+						)}
+					</ListItemDecorator>
 					<ListItemContent>
 						{/* @ts-ignore */}
 						<Box sx={{ pl: 2, width: '100%', display: 'flex', justifyContent: 'space-between' }}>

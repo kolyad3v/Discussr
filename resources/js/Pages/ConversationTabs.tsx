@@ -22,15 +22,15 @@ const ConversationTabs: FC<{ conversations: IConversation[]; setConversationActi
 				{conversations
 					.slice()
 					.reverse()
-					.map(({ id, label, active, user_one_id, messages }, index) => (
+					.map(({ id, label, active, user_one_id, user_one, user_two, messages, updated_at }) => (
 						<ConversationTab
-							avatarUrl={user_one_id === userId ? conversations[index].user_two.avatar?.url : conversations[index].user_one.avatar?.url}
-							key={id}
+							avatarUrl={user_one_id === userId ? user_two.avatar?.url : user_one.avatar?.url}
+							key={id + label + updated_at}
 							id={id}
 							label={label}
 							active={active}
 							setConversationActive={setConversationActive}
-							username={user_one_id === userId ? conversations[index].user_two.username : conversations[index].user_one.username}
+							username={user_one_id === userId ? user_two.username : user_one.username}
 							messageSnippet={getFirstMessageSnippet(messages)}
 						/>
 					))}

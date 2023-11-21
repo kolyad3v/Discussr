@@ -85,7 +85,13 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		sortedPassages.forEach((passage, index) => {
 			// Text before the highlighted segment
 			if (passage.start > lastIndex) {
-				segments.push(<Typography level='body-md'>{children.slice(lastIndex, passage.start)}</Typography>)
+				segments.push(
+					<Typography
+						key={index * Math.random()}
+						level='body-md'>
+						{children.slice(lastIndex, passage.start)}
+					</Typography>
+				)
 			}
 
 			// The highlighted segment

@@ -169,11 +169,20 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 						'--List-nestedInsetStart': '30px',
 						'--ListItem-radius': (theme) => theme.vars.radius.sm,
 					}}>
-					<ConversationTabs
-						userId={user.id}
-						conversations={searchInput ? filteredConversations : conversations}
-						setConversationActive={setConversationActive}
-					/>
+					{conversations.length === 0 ? (
+						<Typography
+							level='h4'
+							color='neutral'
+							sx={{ margin: '0 auto' }}>
+							Start a new conversation
+						</Typography>
+					) : (
+						<ConversationTabs
+							userId={user.id}
+							conversations={searchInput ? filteredConversations : conversations}
+							setConversationActive={setConversationActive}
+						/>
+					)}
 				</List>
 			</Box>
 			<Divider />

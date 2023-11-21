@@ -6,7 +6,7 @@ import Modal from '@/Components/Modal'
 import SecondaryButton from '@/Components/SecondaryButton'
 import TextInput from '@/Components/TextInput'
 import { useForm } from '@inertiajs/react'
-import { AspectRatio, Box, Button, Card, CardActions, CardOverflow, FormControl, FormLabel, IconButton, Input, Stack, Typography } from '@mui/joy'
+import { Box, Button, Card, CardActions, CardOverflow, Stack, Typography } from '@mui/joy'
 
 export default function DeleteUserForm({ className = '' }: { className?: string }) {
 	const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false)
@@ -64,6 +64,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
 				<CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
 					<CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
 						<Button
+							sx={{ transition: '0.2s ease-in-out' }}
 							variant='soft'
 							color='danger'
 							onClick={confirmUserDeletion}>

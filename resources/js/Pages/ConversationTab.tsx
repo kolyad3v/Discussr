@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { IConversationTab } from '@/types'
 import { useForm } from '@inertiajs/react'
 import { Clear } from '@mui/icons-material'
+import { toast } from 'react-toastify'
 
 const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversationActive, avatarUrl, username, messageSnippet }) => {
 	const style = {
@@ -18,7 +19,7 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 		if (confirm('Are you sure you want to delete this conversation?')) {
 			form.delete(route('api.conversations.destroy', id), {
 				onSuccess: () => {
-					alert('Conversation deleted successfully!')
+					toast.success('Conversation deleted successfully!')
 				},
 			})
 		}

@@ -6,9 +6,11 @@ import Textarea from '@mui/joy/Textarea'
 import IconButton from '@mui/joy/IconButton'
 import FormatBold from '@mui/icons-material/FormatBold'
 import FormatItalic from '@mui/icons-material/FormatItalic'
+import CircularProgress from '@mui/joy/CircularProgress'
 
 import { useState, useCallback, useEffect } from 'react'
 import { useForm } from '@inertiajs/react'
+import { toast } from 'react-toastify'
 
 const NewMessageForm = ({
 	activeConversationId,
@@ -38,11 +40,11 @@ const NewMessageForm = ({
 		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
 			onSuccess: () => {
 				setOpen(false)
-				alert('Message submitted successfully')
+				toast.success('Message submitted successfully!')
 				form.reset('message')
 			},
 			onError: () => {
-				alert('Message submission failed')
+				toast.error('Something went wrong!')
 			},
 		})
 	}
@@ -95,7 +97,14 @@ const NewMessageForm = ({
 								color='primary'
 								disabled={form.processing}
 								sx={{ ml: 'auto', transition: 'all 0.2s ease-in-out' }}>
-								{form.processing ? 'Submitting...' : 'Submit'}
+								{form.processing ? (
+									<>
+										Submitting...
+										<CircularProgress size='sm' />
+									</>
+								) : (
+									'Submit'
+								)}
 							</Button>
 						</Box>
 					}

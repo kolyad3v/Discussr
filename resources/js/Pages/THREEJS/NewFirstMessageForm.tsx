@@ -9,6 +9,7 @@ import FormatItalic from '@mui/icons-material/FormatItalic'
 
 import { useState } from 'react'
 import { useForm } from '@inertiajs/react'
+import { toast } from 'react-toastify'
 
 const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversationId: number; setOpen: any }) => {
 	console.log(activeConversationId)
@@ -27,11 +28,11 @@ const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversa
 			preserveState: true,
 			onSuccess: () => {
 				setOpen(false)
-				alert('Message submitted successfully')
+				toast.success('First message submitted successfully!')
 				form.reset('message')
 			},
 			onError: () => {
-				alert('Message submission failed')
+				toast.error('Failed to create first message')
 			},
 		})
 	}

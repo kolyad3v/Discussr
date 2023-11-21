@@ -5,6 +5,7 @@ import { PageProps } from '@/types'
 import { AspectRatio, Avatar, Box, Button, Card, CardActions, CardOverflow, FormControl, FormLabel, IconButton, Input, Stack, Typography } from '@mui/joy'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import axios, { AxiosResponse } from 'axios'
+import { toast } from 'react-toastify'
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '', avatar = null }: { mustVerifyEmail: boolean; status?: string; className?: string; avatar?: any }) {
 	const user = usePage<PageProps>().props.auth.user
@@ -27,7 +28,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
 	const onImageSaved = (res: AxiosResponse) => {
 		setAvatarUrl(res.data)
-
+		toast.success('Profile image updated')
 		setSavingImage(false)
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
@@ -45,7 +46,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 				.then(onImageSaved)
 				.catch((err) => {
 					setSavingImage(false)
-					alert('Error saving image')
+					toast.error('Error saving image')
 				})
 		}
 	}, [])
@@ -100,6 +101,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 										left: 100,
 										top: 170,
 										boxShadow: 'sm',
+										transition: '0.2s ease-in-out',
 									}}
 									onClick={handleProfileImageClick}>
 									<EditRoundedIcon />
@@ -172,12 +174,14 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 					<CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
 						<CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
 							<Button
+								sx={{ transition: '0.2s ease-in-out' }}
 								size='sm'
 								variant='outlined'
 								color='neutral'>
 								Cancel
 							</Button>
 							<Button
+								sx={{ transition: '0.2s ease-in-out' }}
 								size='sm'
 								color='primary'
 								variant='soft'

@@ -22,6 +22,7 @@ const ConversationTabs: FC<{ conversations: IConversation[]; setConversationActi
 							label={label}
 							active={active}
 							setConversationActive={setConversationActive}
+							username={user_one_id === userId ? conversations[index].user_two.username : conversations[index].user_one.username}
 						/>
 					))}
 			</List>

@@ -24,11 +24,13 @@ export interface IConversation {
 	user_two_id: number
 	label: string
 	user_one: {
+		username: string
 		avatar: {
 			url: string
 		}
 	}
 	user_two: {
+		username: string
 		avatar: {
 			url: string
 		}
@@ -39,12 +41,11 @@ export interface IConversation {
 
 export interface IConversationTab {
 	id: number
-
 	label: string
-
 	active: boolean
 	setConversationActive: (id: number) => void
 	avatarUrl: string | null
+	username: string
 }
 
 export type PassageType = {

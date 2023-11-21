@@ -4,7 +4,7 @@ import { IConversationTab } from '@/types'
 import { useForm } from '@inertiajs/react'
 import { Clear } from '@mui/icons-material'
 
-const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversationActive, avatarUrl }) => {
+const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversationActive, avatarUrl, username, messageSnippet }) => {
 	const style = {
 		backgroundColor: active ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
 		transition: ' 0.2s ease-in-out',
@@ -32,7 +32,20 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 					color='primary'
 					sx={style}
 					onClick={() => setConversationActive(id)}>
-					<ListItemDecorator>{avatarUrl ? <Avatar src={avatarUrl} /> : <Avatar>{label[0]}</Avatar>}</ListItemDecorator>
+					<ListItemDecorator>
+						{avatarUrl ? (
+							<Avatar
+								src={avatarUrl}
+								size='lg'
+							/>
+						) : (
+							<Avatar
+								variant='soft'
+								size='lg'>
+								{label[0]}
+							</Avatar>
+						)}
+					</ListItemDecorator>
 					<ListItemContent>
 						{/* @ts-ignore */}
 						<Box sx={{ pl: 2, width: '100%', display: 'flex', justifyContent: 'space-between' }}>
@@ -41,11 +54,23 @@ const ConversationTab: FC<IConversationTab> = ({ id, label, active, setConversat
 									sx={{
 										mb: 0.5,
 									}}>
-									<Typography level='body-xs'>Username</Typography>
+									<Typography
+										level='body-md'
+										sx={{ fontWeight: 'bold' }}>
+										{username}
+									</Typography>
 								</Box>
 
-								<Typography sx={{ mb: 0.5 }}>{label}</Typography>
-								<Typography level='body-sm'>Conversation snippet</Typography>
+								<Typography
+									level='body-md'
+									sx={{ mb: 0.5 }}>
+									{label}
+								</Typography>
+								<Typography
+									level='body-sm'
+									sx={{ mb: 0.5 }}>
+									{messageSnippet}
+								</Typography>
 							</div>
 							<IconButton
 								color='danger'

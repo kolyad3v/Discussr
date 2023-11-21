@@ -15,20 +15,34 @@ export interface IGenericModal {
 	height: number
 }
 
+export type MessageType = {
+	id: number
+	created_at: string
+	updated_at: string
+	message: string
+	user_from_id: number
+	user_to_id: number
+	passage_id: null | number
+	conversation_id: number
+	passages: PassageType[]
+}
+
 export interface IConversation {
 	id: number
 	created_at: string
-	messages: []
+	messages: MessageType[]
 	updated_at: string
 	user_one_id: number
 	user_two_id: number
 	label: string
 	user_one: {
+		username: string
 		avatar: {
 			url: string
 		}
 	}
 	user_two: {
+		username: string
 		avatar: {
 			url: string
 		}
@@ -39,12 +53,12 @@ export interface IConversation {
 
 export interface IConversationTab {
 	id: number
-
 	label: string
-
 	active: boolean
 	setConversationActive: (id: number) => void
 	avatarUrl: string | null
+	username: string
+	messageSnippet: string
 }
 
 export type PassageType = {

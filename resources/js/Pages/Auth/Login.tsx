@@ -37,6 +37,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 					size='sm'
 					variant='outlined'
 					color='neutral'
+					sx={{ transition: '0.2s ease-in-out' }}
 					disabled
 				/>
 			)
@@ -47,6 +48,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 				size='sm'
 				variant='outlined'
 				color='neutral'
+				sx={{ transition: '0.2s ease-in-out' }}
 				aria-label='toggle light/dark mode'
 				{...props}
 				onClick={(event) => {
@@ -190,6 +192,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 								<Button
 									variant='soft'
 									color='neutral'
+									sx={{ transition: '0.2s ease-in-out' }}
 									fullWidth
 									startDecorator={<GoogleIcon />}>
 									Continue with Google
@@ -267,6 +270,9 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 										</Box>
 										<Button
 											type='submit'
+											color='primary'
+											variant='soft'
+											sx={{ transition: '0.2s ease-in-out' }}
 											disabled={processing}
 											fullWidth>
 											{processing ? 'Signing In...' : 'Sign In'}

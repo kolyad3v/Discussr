@@ -136,8 +136,6 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 					<Typography level='title-md'>Welcome back, {user.name}</Typography>
 					<Typography level='body-sm'>Signed in as {user.username}</Typography>
 				</Box>
-
-				{/* <ColorSchemeToggle sx={{ ml: 'auto' }} /> */}
 			</Box>
 
 			<Divider />

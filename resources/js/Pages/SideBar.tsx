@@ -89,7 +89,7 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 				size='md'
 				variant='soft'
 				color='neutral'
-				sx={{ transition: '0.2s ease-in-out' }}
+				sx={{ transition: '0.2s ease-in-out', ml: '-8px' }}
 				aria-label='toggle light/dark mode'
 				{...props}
 				onClick={(event) => {
@@ -240,9 +240,9 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 						defaultExpanded
 						renderToggle={({ open, setOpen }) => (
 							<ListItemButton onClick={() => setOpen(!open)}>
-								<SettingsRoundedIcon />
+								<SettingsRoundedIcon fontSize='large' />
 								<ListItemContent>
-									<Typography level='title-sm'>Settings</Typography>
+									<Typography level='title-sm'></Typography>
 								</ListItemContent>
 								<KeyboardArrowDownIcon sx={{ transform: open ? 'none' : 'rotate(180deg)' }} />
 							</ListItemButton>

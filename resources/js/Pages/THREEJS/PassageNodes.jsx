@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { createContext, useMemo, useRef, useState, useContext, useLayoutEffect, forwardRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Html, QuadraticBezierLine } from '@react-three/drei'
+import { QuadraticBezierLine } from '@react-three/drei'
 import { useDrag } from '@use-gesture/react'
 
 const context = createContext()

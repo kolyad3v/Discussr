@@ -148,7 +148,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 									size='sm'>
 									<BadgeRoundedIcon />
 								</IconButton>
-								<Typography level='title-lg'>Company logo</Typography>
+								<Typography level='title-lg'>Discussr</Typography>
 							</Box>
 							<ColorSchemeToggle />
 						</Box>

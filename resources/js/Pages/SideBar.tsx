@@ -19,11 +19,15 @@ import SupportRoundedIcon from '@mui/icons-material/SupportRounded'
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
+
 import NewConversationButton from './NewConversationButton'
 import { IConversation } from '@/types'
 import { closeSidebar } from './utils'
 import ConversationTabs from './ConversationTabs'
 import { Link } from '@inertiajs/react'
+import { IconButton, IconButtonProps, useColorScheme } from '@mui/joy'
 
 function Toggler({
 	defaultExpanded = false,
@@ -62,6 +66,44 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 	}
 
 	// console.log(user, conversations)
+	function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
+		const { mode, setMode } = useColorScheme()
+		const [mounted, setMounted] = useState(false)
+		useEffect(() => {
+			setMounted(true)
+		}, [])
+		if (!mounted) {
+			return (
+				<IconButton
+					size='sm'
+					variant='soft'
+					color='neutral'
+					sx={{ transition: '0.2s ease-in-out' }}
+					disabled
+				/>
+			)
+		}
+		return (
+			<IconButton
+				id='toggle-mode'
+				size='md'
+				variant='soft'
+				color='neutral'
+				sx={{ transition: '0.2s ease-in-out' }}
+				aria-label='toggle light/dark mode'
+				{...props}
+				onClick={(event) => {
+					if (mode === 'light') {
+						setMode('dark')
+					} else {
+						setMode('light')
+					}
+					onClick?.(event)
+				}}>
+				{mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
+			</IconButton>
+		)
+	}
 
 	return (
 		<Sheet
@@ -206,6 +248,9 @@ const SideBar: FC<{ conversations: IConversation[]; setConversationActive: any; 
 							</ListItemButton>
 						)}>
 						<List sx={{ gap: 0.5 }}>
+							<ListItem>
+								<ColorSchemeToggle />
+							</ListItem>
 							<ListItem sx={{ mt: 0.5 }}>
 								<ListItemButton>
 									<GroupRoundedIcon />

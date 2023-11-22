@@ -202,7 +202,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				)}
 			</GenericModal>
 			{contextMenu.visible && (
-				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: Math.abs(contextMenu.x - 100) }}>
+				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: Math.abs(contextMenu.x - 500) }}>
 					{/* <IconButton
 						aria-label='new message'
 						variant='soft'

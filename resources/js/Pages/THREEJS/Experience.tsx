@@ -6,6 +6,7 @@ import Message from './Message'
 
 import NewFirstMessageButton from './NewFirstMessageButton.js'
 import * as THREE from 'three'
+import { useColorScheme } from '@mui/joy'
 // import { PassageNodes, Node } from './PassageNodes.jsx'
 
 //TODO: go through and update any types
@@ -66,7 +67,8 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	const gapY = 15 // Vertical spacing between messages
 
 	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0, parentYPosition = 0) => {
-		let yPositionOffset = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
+		let dynamicGapY = 25 * Math.pow(0.8, depth)
+		let yPositionOffset = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * dynamicGapY
 		let yPosition = parentYPosition + yPositionOffset
 
 		const messagePosition: [number, number, 0] = [depth * 20, yPosition, 0]
@@ -118,6 +120,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
 	// const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
+	const { mode, setMode } = useColorScheme()
 
 	const renderBezierCurves = () => {
 		return messageLinks.map((link, index) => (
@@ -128,11 +131,11 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 					start={link.parentPosition}
 					end={link.childPosition}
 					mid={calculateMidPoint(link.parentPosition, link.childPosition)}
-					color='black'
+					color={mode === 'dark' ? '#fff' : '#000'}
 					lineWidth={1}
 					dashed={true}
-					dashScale={50}
-					gapSize={10}
+					dashScale={10}
+					gapSize={1}
 				/>
 			</group>
 		))
@@ -143,7 +146,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		// You can adjust this logic based on how you want the curve to be shaped.
 		return [
 			(start[0] + end[0]) / 2,
-			Math.max(start[1], end[1]) + 10, // Adjust the Y value for the mid-point
+			Math.max(start[1], end[1]) + 0, // Adjust the Y value for the mid-point
 			(start[2] + end[2]) / 2,
 		]
 	}

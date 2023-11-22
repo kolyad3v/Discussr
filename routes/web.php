@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\SocialController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,17 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/redirect-to-google', function () {
+    // Assuming you have a route named 'auth.google'
+    return redirect()->route('google.redirect');
+})->name('redirect.to.google');
+
+Route::get('/auth/google', [SocialController::class, 'googleRedirect'])
+    ->name('google.redirect');
+
+Route::get('/auth/google/callback', [SocialController::class, 'handleGoogleCallback'])
+    ->name('google.callback');
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');

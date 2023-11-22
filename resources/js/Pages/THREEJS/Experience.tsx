@@ -1,6 +1,6 @@
-import { FC, createRef, memo, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Html, Text, OrbitControls } from '@react-three/drei'
+import { Text, OrbitControls } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
 import Message from './Message'
 

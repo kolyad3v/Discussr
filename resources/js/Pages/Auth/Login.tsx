@@ -87,7 +87,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 			<Head title='Log in' />
 
 			<CssVarsProvider
-				defaultMode='dark'
+				defaultMode='light'
 				disableTransitionOnChange>
 				<CssBaseline />
 				<GlobalStyles
@@ -142,13 +142,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 									display: 'flex',
 									alignItems: 'center',
 								}}>
-								<IconButton
-									variant='soft'
-									color='primary'
-									size='sm'>
-									<BadgeRoundedIcon />
-								</IconButton>
-								<Typography level='title-lg'>Discussr</Typography>
+								<Typography level='title-lg'>Discussr.</Typography>
 							</Box>
 							<ColorSchemeToggle />
 						</Box>
@@ -192,7 +186,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 								<Button
 									variant='soft'
 									color='neutral'
-									sx={{ transition: '0.2s ease-in-out' }}
+									sx={{ transition: 'all 0.2s ease-in-out' }}
 									fullWidth
 									startDecorator={<GoogleIcon />}>
 									<Link href={route('redirect.to.google')}>Continue with Google</Link>
@@ -270,9 +264,8 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 										</Box>
 										<Button
 											type='submit'
-											color='primary'
 											variant='soft'
-											sx={{ transition: '0.2s ease-in-out' }}
+											sx={{ transition: 'all 0.2s ease-in-out' }}
 											disabled={processing}
 											fullWidth>
 											{processing ? 'Signing In...' : 'Sign In'}

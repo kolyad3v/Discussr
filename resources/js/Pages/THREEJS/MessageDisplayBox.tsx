@@ -87,7 +87,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 			if (passage.start > lastIndex) {
 				segments.push(
 					<Typography
-						key={index * Math.random()}
+						key={index + passage.length}
 						level='body-md'>
 						{children.slice(lastIndex, passage.start)}
 					</Typography>
@@ -98,7 +98,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 			const highlightedSegment = children.slice(passage.start, passage.start + passage.length)
 			segments.push(
 				<Typography
-					key={index}
+					key={index + passage.start}
 					level='body-md'
 					variant={hoveredIndex === index ? 'soft' : 'plain'}
 					onMouseEnter={() => handleMouseEnter(index)}
@@ -214,6 +214,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 
 				<CardContent orientation='horizontal'>
 					<Typography
+						//@ts-ignore
 						ref={bodyText}
 						level='body-md'>
 						{highlightedText}

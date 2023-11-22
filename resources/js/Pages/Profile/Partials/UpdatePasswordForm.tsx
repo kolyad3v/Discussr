@@ -131,12 +131,14 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
 					<CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
 						<CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
 							<Button
+								sx={{ transition: '0.2s ease-in-out' }}
 								size='sm'
 								variant='outlined'
 								color='neutral'>
 								Cancel
 							</Button>
 							<Button
+								sx={{ transition: '0.2s ease-in-out' }}
 								size='sm'
 								color='primary'
 								variant='soft'

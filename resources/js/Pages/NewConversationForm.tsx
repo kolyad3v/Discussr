@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react'
 import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useForm } from '@inertiajs/react'
+import { toast } from 'react-toastify'
 
 const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 	const { data, setData, processing, post, reset } = useForm({
@@ -18,17 +19,17 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 		post(route('api.conversations.store'), {
 			onSuccess: () => {
 				reset('label', 'username')
-				alert('Conversation Created Successfully')
+				toast.success('Conversation created successfully!')
 				setOpen(false)
 			},
 			onError: (err) => {
 				if (typeof err.response === 'object' && (err.response as any).status === 400) {
-					alert('You cannot start a conversation with yourself.')
+					toast.warning('Cannot chat with yourself!')
 					setData('username', '')
 				} else if (typeof err.response === 'object' && (err.response as any).status === 404) {
-					alert('Incorrect User Details')
+					toast.warning('User not found!')
 				} else {
-					alert('Failed to Add Conversation - Sorry! ')
+					toast.error('Something went wrong! Please try again later...')
 					console.log(err)
 				}
 			},

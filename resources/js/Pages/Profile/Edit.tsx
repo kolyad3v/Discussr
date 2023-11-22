@@ -50,12 +50,11 @@ export default function Edit({ auth, mustVerifyEmail, status, avatar }: PageProp
 					mustVerifyEmail={mustVerifyEmail}
 					status={status}
 					avatar={avatar}
-					className='max-w-xl'
 				/>
 
-				<UpdatePasswordForm className='max-w-xl' />
+				<UpdatePasswordForm />
 
-				<DeleteUserForm className='max-w-xl' />
+				<DeleteUserForm />
 			</Stack>
 		</AuthenticatedLayout>
 	)

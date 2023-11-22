@@ -61,10 +61,11 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		}
 	}, [moving, startTargetPos])
 
-	const gapY = 25 // Vertical spacing between messages
+	const gapY = 15 // Vertical spacing between messages
 
-	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
-		let yPosition = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
+	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0, parentYPosition = 0) => {
+		let yPositionOffset = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
+		let yPosition = parentYPosition + yPositionOffset
 
 		const messagePosition: [number, number, 0] = [depth * 20, yPosition, 0]
 		messagePassageIdToPositionMap.set(message.passage_id, messagePosition)
@@ -86,7 +87,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 		childMessages.forEach((childMessage, index: number) => {
 			if (childMessage) {
-				let branch = exploreBranch(childMessage, depth + 1, index)
+				let branch = exploreBranch(childMessage, depth + 1, index, yPosition)
 				if (branch) {
 					finalArray = [...finalArray, ...branch]
 				}

@@ -1,11 +1,12 @@
-import { FC, createRef, memo, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, createRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Html, Text, OrbitControls } from '@react-three/drei'
+import { Html, Text, OrbitControls, QuadraticBezierLine } from '@react-three/drei'
 import { IActiveMessage, PassageType } from '../../types/index.js'
 import Message from './Message'
 
 import NewFirstMessageButton from './NewFirstMessageButton.js'
 import * as THREE from 'three'
+import { useColorScheme } from '@mui/joy'
 // import { PassageNodes, Node } from './PassageNodes.jsx'
 
 //TODO: go through and update any types
@@ -16,8 +17,10 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 	const [moving, setMoving] = useState(false)
 	const [startTargetPos, setStartTargetPos] = useState(new THREE.Vector3())
 	const [endTargetPos, setEndTargetPos] = useState(new THREE.Vector3())
-
 	const [targetPosition, setTargetPosition] = useState<[number, number, number]>()
+
+	let messageLinks: any = []
+	const groupRefs = useMemo(() => messageLinks.map(() => createRef()), [messageLinks])
 
 	const startMovingToTarget = (newTargetPos: [number, number, number]) => {
 		setStartTargetPos(controlsRef.current.target.clone())
@@ -61,10 +64,12 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 		}
 	}, [moving, startTargetPos])
 
-	const gapY = 25 // Vertical spacing between messages
+	const gapY = 15 // Vertical spacing between messages
 
-	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0) => {
-		let yPosition = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * gapY
+	const exploreBranch = (message: IActiveMessage, depth: number, siblingIndex = 0, parentYPosition = 0) => {
+		let dynamicGapY = 25 * Math.pow(0.8, depth)
+		let yPositionOffset = (siblingIndex % 2 === 0 ? -1 : 1) * Math.ceil(siblingIndex / 2.1) * dynamicGapY
+		let yPosition = parentYPosition + yPositionOffset
 
 		const messagePosition: [number, number, 0] = [depth * 20, yPosition, 0]
 		messagePassageIdToPositionMap.set(message.passage_id, messagePosition)
@@ -86,9 +91,17 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 		childMessages.forEach((childMessage, index: number) => {
 			if (childMessage) {
-				let branch = exploreBranch(childMessage, depth + 1, index)
+				let branch = exploreBranch(childMessage, depth + 1, index, yPosition)
 				if (branch) {
 					finalArray = [...finalArray, ...branch]
+
+					const childPosition = messagePassageIdToPositionMap.get(childMessage.passage_id)
+					if (childPosition) {
+						messageLinks.push({
+							parentPosition: messagePosition,
+							childPosition: childPosition,
+						})
+					}
 				}
 			}
 		})
@@ -107,6 +120,47 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	// const [[a1, a2, a3, b1, c1, d1]] = useState(() => [...Array(6)].map(createRef))
 	// const [nodes, setNodes] = useState<{ ref: any; position: [number, number, number]; connectedTo: any[] }[]>([])
+	const { mode, setMode } = useColorScheme()
+
+	const renderBezierCurves = () => {
+		return messageLinks.map((link, index) => (
+			<group
+				ref={groupRefs[index]}
+				key={index}>
+				<QuadraticBezierLine
+					start={link.parentPosition}
+					end={link.childPosition}
+					mid={calculateMidPoint(link.parentPosition, link.childPosition)}
+					color={mode === 'dark' ? '#fff' : '#000'}
+					lineWidth={1}
+					dashed={true}
+					dashScale={10}
+					gapSize={1}
+				/>
+			</group>
+		))
+	}
+
+	const calculateMidPoint = (start: number[], end: number[]) => {
+		// This function calculates the control point for the bezier curve.
+		// You can adjust this logic based on how you want the curve to be shaped.
+		return [
+			(start[0] + end[0]) / 2,
+			Math.max(start[1], end[1]) + 0, // Adjust the Y value for the mid-point
+			(start[2] + end[2]) / 2,
+		]
+	}
+
+	useFrame((_, delta) => {
+		groupRefs.forEach((groupRef) => {
+			if (groupRef.current) {
+				const line = groupRef.current.children[0]
+				if (line && line.material.uniforms.dashOffset) {
+					line.material.uniforms.dashOffset.value -= delta * 5
+				}
+			}
+		})
+	})
 
 	return (
 		<>
@@ -119,6 +173,8 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
+
+			{renderBezierCurves()}
 			{/*
 			{nodes.length > 0 && (
 				<PassageNodes>

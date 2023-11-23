@@ -1,5 +1,5 @@
 import { Html } from '@react-three/drei'
-import { useState, createRef, FC } from 'react'
+import { FC } from 'react'
 //@ts-ignore
 import { PassageNodes, Node } from './PassageNodes.jsx'
 //@ts-ignore

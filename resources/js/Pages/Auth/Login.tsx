@@ -87,7 +87,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 			<Head title='Log in' />
 
 			<CssVarsProvider
-				defaultMode='dark'
+				defaultMode='light'
 				disableTransitionOnChange>
 				<CssBaseline />
 				<GlobalStyles
@@ -186,10 +186,10 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 								<Button
 									variant='soft'
 									color='neutral'
-									sx={{ transition: '0.2s ease-in-out' }}
+									sx={{ transition: 'all 0.2s ease-in-out' }}
 									fullWidth
 									startDecorator={<GoogleIcon />}>
-									Continue with Google
+									<a href={route('google.redirect')}>Continue with Google</a>
 								</Button>
 							</Stack>
 							<Divider
@@ -264,9 +264,8 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 										</Box>
 										<Button
 											type='submit'
-											color='primary'
 											variant='soft'
-											sx={{ transition: '0.2s ease-in-out' }}
+											sx={{ transition: 'all 0.2s ease-in-out' }}
 											disabled={processing}
 											fullWidth>
 											{processing ? 'Signing In...' : 'Sign In'}

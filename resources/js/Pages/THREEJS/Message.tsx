@@ -1,5 +1,6 @@
 import { Html } from '@react-three/drei'
 import { FC } from 'react'
+
 import MessageDisplayBox from './MessageDisplayBox'
 import { PassageType } from '@/types/interfaces.js'
 

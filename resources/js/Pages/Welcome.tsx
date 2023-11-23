@@ -73,42 +73,67 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
 				<TwoSidedLayout>
 					<Typography
 						color='primary'
+						sx={{ fontStyle: 'italic' }}
 						fontSize='lg'
 						fontWeight='lg'>
-						The power to do more
+						discuss: verb
 					</Typography>
+					<Typography color='secondary'>dis·​cuss | \ di-ˈskəs \</Typography>
 					<Typography
 						level='h1'
 						fontWeight='xl'
 						fontSize='clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)'>
-						A large headlinerer about our product features & services
+						To investigate by reasoning or argument.
 					</Typography>
 					<Typography
 						fontSize='lg'
 						textColor='text.secondary'
 						lineHeight='lg'>
-						A descriptive secondary text placeholder. Use it to explain your business offer better.
+						An enjoyable place to talk.
 					</Typography>
 					{auth.user ? (
 						<>
-							<Typography>Welcome Back {auth.user.name}</Typography>
+							<Typography sx={{ fontWeight: 'bold' }}>Welcome back, {auth.user.name}</Typography>
 							<Link
 								href={route('dashboard')}
-								className='font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500'>
-								Dashboard
+								className=''>
+								<Button
+									variant='soft'
+									size='lg'
+									sx={{ transition: 'all 0.2s ease-in-out' }}>
+									Dashboard{' '}
+									<ArrowForward
+										fontSize='md'
+										sx={{ mt: '-3px', ml: '2px' }}
+									/>
+								</Button>
 							</Link>
 						</>
 					) : (
 						<>
-							<Button
-								size='lg'
-								variant='soft'
-								sx={{ transition: 'all 0.2s ease-in-out' }}
-								endDecorator={<ArrowForward fontSize='xl' />}>
-								<Link href={route('register')}>Get Started</Link>
-							</Button>
+							<Link href={route('register')}>
+								<Button
+									size='lg'
+									variant='soft'
+									sx={{ transition: 'all 0.2s ease-in-out' }}
+									endDecorator={
+										<ArrowForward
+											fontSize='xl'
+											sx={{
+												mt: '-3px',
+											}}
+										/>
+									}>
+									Get Started
+								</Button>
+							</Link>
 							<Typography>
-								Already a member? <Link href={route('login')}>Sign in</Link>
+								Already a member?{' '}
+								<Link
+									href={route('login')}
+									style={{ transition: 'color 0.2s ease-in-out' }}>
+									Sign in
+								</Link>
 							</Typography>
 						</>
 					)}

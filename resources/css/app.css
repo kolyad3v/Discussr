@@ -42,3 +42,7 @@
 	--toastify-color-progress-warning: var(--toastify-color-warning);
 	--toastify-color-progress-error: var(--toastify-color-error);
 }
+
+textarea {
+	overflow: visible !important;
+}

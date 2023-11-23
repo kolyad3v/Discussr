@@ -27,7 +27,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		}
 	}, [children])
 
-	console.log(passages, `passages passed in to message display box for message id:${messageId}}`)
+	// console.log(passages, `passages passed in to message display box for message id:${messageId}}`)
 	const titleSnippet = getTitleSnippetFromChildren()
 
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -38,40 +38,6 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 	const handleMouseLeave = () => {
 		setHoveredIndex(null)
 	}
-
-	// const highlightedText = useMemo(() => {
-	// 	if (typeof children !== 'string') {
-	// 		return children
-	// 	}
-
-	// 	let lastIndex = 0
-	// 	const sortedPassages = [...passages].sort((a, b) => a.start - b.start)
-	// 	const segments = sortedPassages.flatMap((passage, index) => {
-	// 		const startSegment = children.slice(lastIndex, passage.start)
-	// 		const highlightedSegment = children.slice(passage.start, passage.start + passage.length)
-	// 		lastIndex = passage.start + passage.length
-	// 		return [
-	// 			startSegment,
-	// 			<Typography
-	// 				key={index}
-	// 				level='body-md'
-	// 				variant={hoveredIndex === index ? 'soft' : 'plain'}
-	// 				onMouseEnter={() => handleMouseEnter(index)}
-	// 				onMouseLeave={handleMouseLeave}
-	// 				onClick={() => {
-	// 					handlePassageClick(passage.id)
-	// 				}}
-	// 				sx={{ cursor: 'pointer', transition: 'all 0.2s ease-in-out' }}
-	// 				color='danger'>
-	// 				{highlightedSegment}
-	// 			</Typography>,
-	// 		]
-	// 	})
-
-	// 	segments.push(children.slice(lastIndex))
-
-	// 	return segments
-	// }, [children, passages, hoveredIndex])
 
 	const highlightedText = useMemo(() => {
 		if (typeof children !== 'string') {
@@ -173,7 +139,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 		}
 	}, [])
 
-	console.log(passageInfo, 'message display box')
+	// console.log(passageInfo, 'message display box')
 	useEffect(() => {
 		const handleDocumentClick = (event) => {
 			// Check if the click is outside the context menu
@@ -236,7 +202,7 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 				)}
 			</GenericModal>
 			{contextMenu.visible && (
-				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: Math.abs(contextMenu.x - 100) }}>
+				<div style={{ position: 'absolute', top: contextMenu.y - 200, left: Math.abs(contextMenu.x - 500) }}>
 					{/* <IconButton
 						aria-label='new message'
 						variant='soft'
@@ -251,7 +217,6 @@ const MessageDisplayBox: FC<MessageDisplayBoxProps> = ({ children, createdAt, pa
 						color='success'
 						onClick={() => {
 							setOpen(true)
-							console.log(passageInfo)
 						}}
 						sx={{
 							'--IconButton-size': '64px',

@@ -45,7 +45,7 @@ export default function TwoSidedLayout({ children, reversed }: React.PropsWithCh
 			</Box>
 			<AspectRatio
 				ratio={600 / 520}
-				variant='outlined'
+				variant='plain'
 				maxHeight={300}
 				sx={(theme) => ({
 					minWidth: 300,
@@ -57,11 +57,11 @@ export default function TwoSidedLayout({ children, reversed }: React.PropsWithCh
 						'--AspectRatio-minHeight': '400px',
 					},
 					borderRadius: 'sm',
-					bgcolor: 'background.level2',
+					bgcolor: 'none',
 					flexBasis: '50%',
 				})}>
 				<img
-					src='https://images.unsplash.com/photo-1483791424735-e9ad0209eea2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
+					src='/logo_clean.png'
 					alt=''
 				/>
 			</AspectRatio>

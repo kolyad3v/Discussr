@@ -142,13 +142,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 									display: 'flex',
 									alignItems: 'center',
 								}}>
-								<IconButton
-									variant='soft'
-									color='primary'
-									size='sm'>
-									<BadgeRoundedIcon />
-								</IconButton>
-								<Typography level='title-lg'>Discussr</Typography>
+								<Typography level='title-lg'>Discussr.</Typography>
 							</Box>
 							<ColorSchemeToggle />
 						</Box>
@@ -182,7 +176,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 									<Typography level='body-sm'>
 										New to Discussr?{' '}
 										<Link
-											href='#replace-with-a-link'
+											href={route('register')}
 											level='title-sm'>
 											Sign up!
 										</Link>

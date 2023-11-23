@@ -189,7 +189,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 									sx={{ transition: 'all 0.2s ease-in-out' }}
 									fullWidth
 									startDecorator={<GoogleIcon />}>
-									<Link href={route('redirect.to.google')}>Continue with Google</Link>
+									<a href={route('google.redirect')}>Continue with Google</a>
 								</Button>
 							</Stack>
 							<Divider

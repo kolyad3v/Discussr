@@ -30,15 +30,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/redirect-to-google', function () {
-    // Assuming you have a route named 'auth.google'
-    return redirect()->route('google.redirect');
-})->name('redirect.to.google');
+// Route::get('/redirect-to-google', function () {
+//     // Assuming you have a route named 'auth.google'
+//     return redirect()->route('google.redirect');
+// })->name('redirect.to.google');
 
 Route::get('/auth/google', [SocialController::class, 'googleRedirect'])
     ->name('google.redirect');
 
-Route::get('/auth/google/callback', [SocialController::class, 'handleGoogleCallback'])
+Route::any('/auth/google/callback', [SocialController::class, 'handleGoogleCallback'])
     ->name('google.callback');
 
 // Route::get('/dashboard', function () {

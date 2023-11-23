@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react'
 import framesxTheme from './welcome/Theme'
 import TwoSidedLayout from './welcome/TwoSidedLayout'
 
-export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
+export default function Welcome({ auth }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
 	function ColorSchemeToggle() {
 		const { mode, setMode } = useColorScheme()
 		const [mounted, setMounted] = useState(false)
@@ -89,7 +89,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
 						fontSize='lg'
 						textColor='text.secondary'
 						lineHeight='lg'>
-						An enjoyable place to talk.
+						Facilitating Complex Conversations.
 					</Typography>
 					{auth.user ? (
 						<>

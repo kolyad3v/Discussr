@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -67,6 +68,11 @@ class User extends Authenticatable
     {
 
         return $this->avatar ? $this->avatar->url : 'default-avatar-url';
+    }
+
+    public function forgetConversationsCache()
+    {
+        Cache::forget('conversations.' . $this->id);
     }
 
 }

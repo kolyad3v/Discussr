@@ -1,3 +1,5 @@
+import { IConversation } from './interfaces'
+
 export * from './interfaces'
 
 export interface User {
@@ -13,4 +15,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 		user: User
 	}
 	conversationsData: any
+	conversation: IConversation
 }

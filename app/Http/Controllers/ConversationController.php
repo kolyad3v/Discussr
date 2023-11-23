@@ -19,10 +19,10 @@ class ConversationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(?Conversation $conversation)
     {
 
-        $conversations = Cache::remember('conversations.' . Auth::id(), 60, function () {
+        // $conversations = Cache::remember('conversations.' . Auth::id(), 60, function () {
             $conversations = Auth::user()->conversations;
 
             $conversations->load([
@@ -31,13 +31,24 @@ class ConversationController extends Controller
                 'userTwo.avatar'
             ]);
 
-            return $conversations;
-        });
+            if ($conversation)
+            {
+                $conversation->load([
+                    'messages.passages',
+                    'userOne.avatar',
+                    'userTwo.avatar'
+                ]);
+            }
+
+        //     return $conversations;
+        // });
 
         Auth::user()->load('avatar');
 
         return Inertia::render('Dashboard', [
             'conversationsData' => $conversations,
+            'conversation' => $conversation
+
         ]);
     }
 
@@ -99,12 +110,7 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        return to_route('dashboard');
     }
 
     /**
@@ -204,12 +210,7 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        return to_route('dashboard', $conversation);
     }
 
     public function storeFirstMessage(Request $request, Conversation $conversation)

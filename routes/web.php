@@ -30,10 +30,6 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/redirect-to-google', function () {
-//     // Assuming you have a route named 'auth.google'
-//     return redirect()->route('google.redirect');
-// })->name('redirect.to.google');
 
 Route::get('/auth/google', [SocialController::class, 'googleRedirect'])
     ->name('google.redirect');

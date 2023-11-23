@@ -114,6 +114,7 @@ const NewMessageForm = ({
 						fontStyle: italic ? 'italic' : 'initial',
 						height: '100%',
 						p: 2,
+						overflow: 'visble',
 					}}
 				/>
 			</FormControl>

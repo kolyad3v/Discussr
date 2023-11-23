@@ -94,6 +94,7 @@ const NewFirstMessageForm = ({ activeConversationId, setOpen }: { activeConversa
 						fontStyle: italic ? 'italic' : 'initial',
 						height: '100%',
 						p: 2,
+						overflow: 'visible !important',
 					}}
 				/>
 			</FormControl>

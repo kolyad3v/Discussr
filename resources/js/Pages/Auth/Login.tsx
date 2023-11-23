@@ -176,7 +176,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 									<Typography level='body-sm'>
 										New to Discussr?{' '}
 										<Link
-											href='#replace-with-a-link'
+											href={route('register')}
 											level='title-sm'>
 											Sign up!
 										</Link>

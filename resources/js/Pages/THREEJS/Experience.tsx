@@ -110,28 +110,20 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	return (
 		<>
+			<color
+				args={['#fbfcfe']}
+				attach='background'
+			/>
 			<OrbitControls
 				enableRotate={false}
 				enableZoom={true}
 				ref={controlsRef}
 			/>
+
 			<ambientLight intensity={0.5} />
 			{activeConversationId === 0 && <Text>Select A Conversation To Begin</Text>}
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
-			{/*
-			{nodes.length > 0 && (
-				<PassageNodes>
-					{nodes.map((node, index) => (
-						<Node
-							key={index}
-							ref={node.ref}
-							position={node.position}
-							connectedTo={node.connectedTo}
-						/>
-					))}
-				</PassageNodes>
-			)} */}
 		</>
 	)
 })

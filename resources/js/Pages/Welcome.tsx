@@ -111,13 +111,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
 						</>
 					) : (
 						<>
-							<Button
-								size='lg'
-								variant='soft'
-								sx={{ transition: 'all 0.2s ease-in-out' }}
-								endDecorator={<ArrowForward fontSize='xl' />}>
-								<Link href={route('register')}>Get Started</Link>
-							</Button>
+							<Link href={route('register')}>
+								<Button
+									size='lg'
+									variant='soft'
+									sx={{ transition: 'all 0.2s ease-in-out' }}
+									endDecorator={
+										<ArrowForward
+											fontSize='xl'
+											sx={{
+												mt: '-3px',
+											}}
+										/>
+									}>
+									Get Started
+								</Button>
+							</Link>
 							<Typography>
 								Already a member?{' '}
 								<Link

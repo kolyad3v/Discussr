@@ -244,12 +244,14 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        // return Inertia::render('Dashboard', [
+        //     'conversationsData' => $conversations,
+        //     'auth' => [
+        //         'user' => Auth::user()
+        //     ],
+        // ]);
+
+        return to_route('dashboard', $conversation);
     }
 
 }

@@ -41,4 +41,10 @@ class Conversation extends Model
     {
         return $user->id === $this->user_one_id || $user->id === $this->user_two_id;
     }
+
+    public function forgetCache()
+    {
+        $this->userOne->forgetConversationsCache();
+        $this->userTwo->forgetConversationsCache();
+    }
 }

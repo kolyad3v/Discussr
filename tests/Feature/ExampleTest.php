@@ -17,3 +17,6 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 }
+
+// Simulates a request handled by the application and showing the response
+// Simulates logic

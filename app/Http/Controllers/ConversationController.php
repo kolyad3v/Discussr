@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreConversationRequest;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Passage;
@@ -63,13 +64,10 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreConversationRequest $request)
     {
 
-        $validated = $request->validate([
-            'username' => 'required',
-            'label'=> 'required|string|max:40',
-        ]);
+        $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
 

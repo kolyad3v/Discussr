@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreConversationRequest;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Passage;
@@ -19,10 +20,10 @@ class ConversationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(?Conversation $conversation)
     {
 
-        $conversations = Cache::remember('conversations.' . Auth::id(), 60, function () {
+        // $conversations = Cache::remember('conversations.' . Auth::id(), 60, function () {
             $conversations = Auth::user()->conversations;
 
             $conversations->load([
@@ -31,13 +32,24 @@ class ConversationController extends Controller
                 'userTwo.avatar'
             ]);
 
-            return $conversations;
-        });
+            if ($conversation)
+            {
+                $conversation->load([
+                    'messages.passages',
+                    'userOne.avatar',
+                    'userTwo.avatar'
+                ]);
+            }
+
+        //     return $conversations;
+        // });
 
         Auth::user()->load('avatar');
 
         return Inertia::render('Dashboard', [
             'conversationsData' => $conversations,
+            'conversation' => $conversation
+
         ]);
     }
 
@@ -52,13 +64,10 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreConversationRequest $request)
     {
 
-        $validated = $request->validate([
-            'username' => 'required',
-            'label'=> 'required|string|max:40',
-        ]);
+        $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
 
@@ -99,12 +108,7 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        return to_route('dashboard');
     }
 
     /**
@@ -204,12 +208,7 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        return to_route('dashboard', $conversation);
     }
 
     public function storeFirstMessage(Request $request, Conversation $conversation)
@@ -243,12 +242,14 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        // return Inertia::render('Dashboard', [
+        //     'conversationsData' => $conversations,
+        //     'auth' => [
+        //         'user' => Auth::user()
+        //     ],
+        // ]);
+
+        return to_route('dashboard', $conversation);
     }
 
 }

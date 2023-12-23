@@ -7,7 +7,7 @@ import SideBar from './SideBar'
 import { useEffect, useState } from 'react'
 import Main from './THREEJS/Main'
 
-export default function Dashboard({ auth, conversationsData }: PageProps) {
+export default function Dashboard({ auth, conversationsData, conversation }: PageProps) {
 	const enhanceConversationsWithActiveState = (conversations: any[]) => {
 		return conversations.map((conversation) => ({
 			...conversation,

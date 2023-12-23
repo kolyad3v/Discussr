@@ -1,4 +1,3 @@
-
 import { FC, createRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Html, Text, OrbitControls, QuadraticBezierLine } from '@react-three/drei'
@@ -165,10 +164,10 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 
 	return (
 		<>
-			<color
+			{/* <color
 				args={['#fbfcfe']}
 				attach='background'
-			/>
+			/> */}
 			<OrbitControls
 				enableRotate={false}
 				enableZoom={true}
@@ -180,10 +179,7 @@ const Experience: FC<{ activeMessages: IActiveMessage[]; activeConversationId: n
 			{activeMessages.length === 0 && activeConversationId !== 0 && <NewFirstMessageButton activeConversationId={activeConversationId} />}
 			{activeMessages.length !== 0 && renderMessages()}
 
-
 			{renderBezierCurves()}
-	
-
 		</>
 	)
 })

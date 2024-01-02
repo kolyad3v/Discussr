@@ -162,12 +162,7 @@ class ConversationController extends Controller
             }
         ])->get();
 
-        return Inertia::render('Dashboard', [
-            'conversationsData' => $conversations,
-            'auth' => [
-                'user' => Auth::user()
-            ],
-        ]);
+        return to_route('dashboard');
     }
 
     public function storeMessage(Request $request, Conversation $conversation)

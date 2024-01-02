@@ -16,7 +16,7 @@ const NewConversationForm: FC<{ setOpen: any }> = ({ setOpen }) => {
 
 	const submit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		post(route('api.conversations.store'), {
+		post(route('conversations.store'), {
 			onSuccess: () => {
 				reset('label', 'username')
 				toast.success('Conversation created successfully!')

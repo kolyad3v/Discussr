@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Conversation;
 
 
 /*
@@ -49,6 +50,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/{conversation?}', [ConversationController::class, 'index'])
     ->name('dashboard');
 });
+
+Route::get('/conversations', [ConversationController::class, 'index'])
+->name('api.conversations.index')
+->can('viewAny', Conversation::class);
+
+
+Route::post('/conversations', [ConversationController::class, 'store'])
+    ->name('conversations.store')
+    ->can('create', Conversation::class);
+
+Route::post('/conversations/{conversation}/firstMessage', [ConversationController::class, 'storeFirstMessage'])
+    ->name('conversations.firstMessage.store')
+    ->can('createMessage', 'conversation');
+
+Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])
+    ->name('conversations.messages.store')
+    ->can('createMessage', 'conversation');
+
+
+Route::delete('/conversations/{conversation}', [ConversationController::class, 'destroy'])
+    ->name('api.conversations.destroy')
+    ->can('delete', 'conversation');
+
 
 if (app()->environment('local'))
     {

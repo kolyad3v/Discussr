@@ -37,7 +37,7 @@ const NewMessageForm = ({
 	const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		form.post(route('api.conversations.messages.store', { conversation: activeConversationId }), {
+		form.post(route('conversations.messages.store', { conversation: activeConversationId }), {
 			onSuccess: () => {
 				setOpen(false)
 				toast.success('Message submitted successfully!')
